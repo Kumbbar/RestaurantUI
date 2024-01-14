@@ -1,0 +1,10 @@
+env/
+**/env/
+_trial_temp/
+*.sqlite3
+.idea/
+**/__pycache__/
+__pycache__/
+**/.idea/
+.env
+enviroments/
