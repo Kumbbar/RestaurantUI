@@ -1,7 +1,7 @@
 from flet_core import UserControl, Page
 
-from core.urls import view_urls
-from pages.views import StyleView
+from .urls import view_urls
+from .views import StyleView
 
 
 class BasePageRouteHandler(UserControl):
