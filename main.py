@@ -1,5 +1,8 @@
-from flet import *
 import logging
+
+from flet_core import Page
+from flet_core.types import WEB_BROWSER
+from flet_runtime import app
 
 from core.app import BaseApp
 import settings
@@ -8,7 +11,6 @@ import settings
 class MainApp(BaseApp):
     def __init__(self, page: Page):
         super().__init__(page)
-        self.page.dark_theme = False
 
 
 if settings.DEBUG:
