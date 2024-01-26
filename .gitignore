@@ -8,4 +8,4 @@ __pycache__/
 **/.idea/
 .env
 enviroments/
-test.py
+test/

@@ -1,5 +1,6 @@
 import flet as ft
 
+from auth.login import login_user
 from consts.colors import PastelColors
 from consts.sizes import BUTTON_HEIGHT, BUTTON_WIGHT, BASE_HEIGHT, BR
 from consts.style import CONTENT_PADDING
@@ -15,7 +16,7 @@ class LoginPage(ft.Container):
         self.expand = True
         self.background_image = ft.Image(
             src='assets/images/deckstop_background.svg',
-            fit=ft.ImageFit.FILL
+            fit=ft.ImageFit.COVER
         )
         self.page.bgcolor = ft.colors.BLACK
         self.view_hide_text = ft.Text(
@@ -188,8 +189,16 @@ class LoginPage(ft.Container):
 
     def switch_page(self, e):
         if self.password_input.content.value and self.login_input.content.value:
-            self.error.visible = False
-            self.page.go('/')
+            login_result = login_user(
+                self.login_input.content.value,
+                self.password_input.content.value
+            )
+            if login_result:
+                self.error.visible = False
+                self.page.session.set('token', login_result)
+                self.page.go('/')
+            self.error.data = 'TEST'
+            self.error.update()
         else:
             self.error.visible = True
             self.login_box.update()
