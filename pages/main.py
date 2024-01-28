@@ -8,11 +8,6 @@ from settings import LOGIN_PAGE_VIEW_URL, SESSION_TOKEN_KEY
 class MainPage(BasePage):
     def __init__(self, page: ft.Page):
         super().__init__(page)
-        print(id(page), 'main page')
-
-        self.offset = ft.transform.Offset(0, 0, )
-        print(page.client_storage.get_keys('token'), 'init')
-        self.expand = True
         self.view_hide_text = ft.Text(
             value='View',
             color=PastelColors.WHITE_BASE,
