@@ -1,12 +1,17 @@
 import flet as ft
 from consts.colors import PastelColors
 from consts.sizes import BUTTON_HEIGHT
+from pages.base import BasePage
+from settings import LOGIN_PAGE_VIEW_URL, SESSION_TOKEN_KEY
 
 
-class MainPage(ft.Container):
+class MainPage(BasePage):
     def __init__(self, page: ft.Page):
-        super().__init__()
+        super().__init__(page)
+        print(id(page), 'main page')
+
         self.offset = ft.transform.Offset(0, 0, )
+        print(page.client_storage.get_keys('token'), 'init')
         self.expand = True
         self.view_hide_text = ft.Text(
             value='View',
@@ -16,7 +21,7 @@ class MainPage(ft.Container):
         )
         self.content = ft.Container(
             alignment=ft.alignment.center,
-            on_click=lambda _: page.go('/login'),
+            on_click=self.back_click,
             height=50, width=150,
             bgcolor='white',
             content=ft.Text(
@@ -41,4 +46,7 @@ class MainPage(ft.Container):
         )
 
     def back_click(self, e):
-        self.page.go('/login')
+        self.auth_service.logout_user()
+        if not self.auth_service.is_authenticated:
+            self.page.go(LOGIN_PAGE_VIEW_URL)
+

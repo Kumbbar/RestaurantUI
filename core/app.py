@@ -1,4 +1,6 @@
 from flet_core import Page
+
+from settings import MAIN_PAGE_VIEW_URL
 from .route import BasePageRouteHandler
 
 
@@ -34,7 +36,8 @@ class BaseApp(BasePageRouteHandler):
             "Poppins BlackItalic": "fonts/poppins/Poppins-BlackItalic.ttf",
             "Poppins Black": "fonts/poppins/Poppins-Black.ttf",
         }
+
         self.init()
 
     def init(self):
-        self.page.go('/')
+        self.page.go(MAIN_PAGE_VIEW_URL)

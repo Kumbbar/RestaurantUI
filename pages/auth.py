@@ -1,19 +1,17 @@
 import flet as ft
+from flet_core import Page
 
-from auth.login import login_user
 from consts.colors import PastelColors
 from consts.sizes import BUTTON_HEIGHT, BUTTON_WIGHT, BASE_HEIGHT, BR
 from consts.style import CONTENT_PADDING
 from consts.text import ERROR_MESSAGE
+from pages.base import BasePage
+from settings import MAIN_PAGE_VIEW_URL
 
 
-class LoginPage(ft.Container):
-    def __init__(self, page: ft.Page):
-        super().__init__()
-
-        self.padding = 0
-        self.page = page
-        self.expand = True
+class LoginPage(BasePage):
+    def __init__(self, page: Page):
+        super().__init__(page)
         self.background_image = ft.Image(
             src='assets/images/deckstop_background.svg',
             fit=ft.ImageFit.COVER
@@ -188,17 +186,17 @@ class LoginPage(ft.Container):
         self.view_hide_text.update()
 
     def switch_page(self, e):
-        if self.password_input.content.value and self.login_input.content.value:
-            login_result = login_user(
+        if self.login_input.content.value and self.password_input.content.value:
+            self.auth_service.login_user(
                 self.login_input.content.value,
                 self.password_input.content.value
             )
-            if login_result:
+            if self.auth_service.is_authenticated:
                 self.error.visible = False
-                self.page.session.set('token', login_result)
-                self.page.go('/')
-            self.error.data = 'TEST'
-            self.error.update()
+                self.page.go(MAIN_PAGE_VIEW_URL)
+            else:
+                self.error.visible = True
+            self.login_box.update()
         else:
             self.error.visible = True
             self.login_box.update()
