@@ -1,6 +1,6 @@
 from flet_core import Page, RouteChangeEvent
 
-from services.auth import AuthService
+from services.requests.auth import AuthService
 from settings import LOGIN_PAGE_VIEW_URL, MAIN_PAGE_VIEW_URL
 from .urls import view_urls
 from .views import StyleView

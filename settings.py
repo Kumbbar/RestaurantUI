@@ -1,5 +1,11 @@
-DEBUG = True
+import os
 
+from dotenv import load_dotenv
+
+# Load .env file
+load_dotenv()
+
+DEBUG = True
 
 # Backend settings
 HTTP_METHOD = 'http'
@@ -13,3 +19,6 @@ MAIN_PAGE_VIEW_URL = '/'
 LOGIN_PAGE_VIEW_URL = '/login'
 
 SESSION_TOKEN_KEY = 'token'
+
+
+SECRET_KEY = os.environ.get('SECRET_KEY')

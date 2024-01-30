@@ -1,6 +1,6 @@
 from flet_core import Container, Page, transform
 
-from services.auth import AuthService
+from services.requests.auth import AuthService
 
 
 class BasePage(Container):
