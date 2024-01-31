@@ -5,7 +5,7 @@ from consts.colors import PastelColors
 from consts.sizes import BUTTON_HEIGHT, BUTTON_WIGHT, BASE_HEIGHT, BR
 from consts.style import CONTENT_PADDING
 from consts.text import ERROR_MESSAGE
-from pages.base import BasePage
+from pages import BasePage
 from settings import MAIN_PAGE_VIEW_URL
 
 

@@ -1,8 +1,10 @@
+import math
+
 import flet as ft
 from consts.colors import PastelColors
 from consts.sizes import BUTTON_HEIGHT
-from pages.base import BasePage
-from settings import LOGIN_PAGE_VIEW_URL, SESSION_TOKEN_KEY
+from pages import BasePage
+from settings import LOGIN_PAGE_VIEW_URL
 
 
 class MainPage(BasePage):
@@ -16,7 +18,7 @@ class MainPage(BasePage):
         )
         self.content = ft.Container(
             alignment=ft.alignment.center,
-            on_click=self.back_click,
+            on_click=self.logout_click,
             height=50, width=150,
             bgcolor='white',
             content=ft.Text(
@@ -25,22 +27,67 @@ class MainPage(BasePage):
                 color='black'
             )
         )
-        self.button = ft.Container(
-            height=BUTTON_HEIGHT,
-            width=BUTTON_HEIGHT,
-            on_click=self.back_click,
-            bgcolor=PastelColors.DARK_BROWN,
-            border_radius=10,
-            alignment=ft.alignment.center,
-            content=ft.Text(
-                value='Continue',
-                font_family='Poppins Medium',
-                size=16,
+        self.content = ft.ResponsiveRow(
+            controls=[
+                ft.Container(
+                    gradient=ft.LinearGradient(
+                        begin=ft.alignment.top_left,
+                        end=ft.Alignment(0.8, 1),
+                        colors=[
+                            "0xff1f005c",
+                            "0xff5b0060",
+                            "0xff870160",
+                            "0xffac255e",
+                            "0xffca485c",
+                            "0xffe16b5c",
+                            "0xfff39060",
+                            "0xffffb56b",
+                        ],
+                        tile_mode=ft.GradientTileMode.MIRROR,
+                        rotation=math.pi / 3,
+                    ),
+                    col={
+                        "xs": 0,
+                        "sm": 4,
+                        "md": 2,
+                        "xl": 2
+                    },
+                    content=ft.NavigationRail(
+                        selected_index=0,
+                        extended=True,
+                        height=800,
+                        label_type=ft.NavigationRailLabelType.ALL,
+                        leading=ft.Container(
+                            content=ft.Icon(
+                                name=ft.icons.FAVORITE
+                            )
+                        ),
 
-            )
+                        destinations=[
+                            ft.NavigationRailDestination(
+                                label='ADMIN',
+                                selected_icon=ft.icons.DASHBOARD,
+                                icon=ft.icons.DASHBOARD_OUTLINED,
+                            ),
+                            ft.NavigationRailDestination(
+                                label='SETTINGS',
+                                selected_icon=ft.icons.SETTINGS,
+                                icon=ft.icons.SETTINGS_OUTLINED,
+                            ),
+                            ft.NavigationRailDestination(
+                                label='ABOUT',
+                                selected_icon=ft.icons.TAG,
+                                icon=ft.icons.TAG_OUTLINED,
+                            )
+
+                        ]
+                    )
+                )
+            ]
         )
 
-    def back_click(self, e):
+
+    def logout_click(self, _):
         self.auth_service.logout_user()
         if not self.auth_service.is_authenticated:
             self.page.go(LOGIN_PAGE_VIEW_URL)
