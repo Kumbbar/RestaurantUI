@@ -18,9 +18,8 @@ class AuthService(UserRequestService):
             self.__set_token(response.json()[SESSION_TOKEN_KEY])
 
     def logout_user(self):
-        response = self.send_closed_request(
+        self.send_closed_request(
             RequestMethod.POST,
             f'{BACKEND_BASE_URL}/auth/logout/',
         )
-        if response.ok:
-            self.page_link.client_storage.remove(SESSION_TOKEN_KEY)
+        self.page_link.client_storage.remove(SESSION_TOKEN_KEY)

@@ -3,6 +3,7 @@ import math
 import flet as ft
 from consts.colors import PastelColors
 from consts.sizes import BUTTON_HEIGHT
+from controls.menu import MainMenu
 from pages import BasePage
 from settings import LOGIN_PAGE_VIEW_URL
 
@@ -18,7 +19,6 @@ class MainPage(BasePage):
         )
         self.content = ft.Container(
             alignment=ft.alignment.center,
-            on_click=self.logout_click,
             height=50, width=150,
             bgcolor='white',
             content=ft.Text(
@@ -27,68 +27,59 @@ class MainPage(BasePage):
                 color='black'
             )
         )
-        self.content = ft.ResponsiveRow(
-            controls=[
-                ft.Container(
-                    gradient=ft.LinearGradient(
-                        begin=ft.alignment.top_left,
-                        end=ft.Alignment(0.8, 1),
-                        colors=[
-                            "0xff1f005c",
-                            "0xff5b0060",
-                            "0xff870160",
-                            "0xffac255e",
-                            "0xffca485c",
-                            "0xffe16b5c",
-                            "0xfff39060",
-                            "0xffffb56b",
-                        ],
-                        tile_mode=ft.GradientTileMode.MIRROR,
-                        rotation=math.pi / 3,
-                    ),
-                    col={
-                        "xs": 0,
-                        "sm": 4,
-                        "md": 2,
-                        "xl": 2
-                    },
-                    content=ft.NavigationRail(
-                        selected_index=0,
-                        extended=True,
-                        height=800,
-                        label_type=ft.NavigationRailLabelType.ALL,
-                        leading=ft.Container(
-                            content=ft.Icon(
-                                name=ft.icons.FAVORITE
-                            )
-                        ),
+        self.first = ft.Container(
+                            height=300,
+                            width=700,
+                            bgcolor='red',
+                            col={"sm": 6, "md": 4, "xl": 2},
+            content=ft.Text('first')
+                        )
+        self.second = ft.Container(
+                            height=300,
+                            width=300,
+                            bgcolor='red',
+                            col={"sm": 6, "md": 4, "xl": 2},
+            content=ft.Text('second')
 
-                        destinations=[
-                            ft.NavigationRailDestination(
-                                label='ADMIN',
-                                selected_icon=ft.icons.DASHBOARD,
-                                icon=ft.icons.DASHBOARD_OUTLINED,
-                            ),
-                            ft.NavigationRailDestination(
-                                label='SETTINGS',
-                                selected_icon=ft.icons.SETTINGS,
-                                icon=ft.icons.SETTINGS_OUTLINED,
-                            ),
-                            ft.NavigationRailDestination(
-                                label='ABOUT',
-                                selected_icon=ft.icons.TAG,
-                                icon=ft.icons.TAG_OUTLINED,
-                            )
+        )
 
+        self.content = ft.Container(
+            padding=ft.Padding(20, 20, 20, 20),
+            gradient=ft.LinearGradient(
+                begin=ft.alignment.top_left,
+                end=ft.Alignment(0.8, 1),
+                colors=[
+                    PastelColors.LIGHT_BROWN,
+                    PastelColors.WHITE_BASE
+                ],
+                tile_mode=ft.GradientTileMode.MIRROR,
+                rotation=math.pi / 3,
+            ),
+            content=ft.ResponsiveRow(
+                controls=[
+                    MainMenu(),
+                    ft.Column(
+                        col={"sm": 8, "md": 6, "xl": 6, "xs": 11},
+                        scroll=ft.ScrollMode.AUTO,
+                        controls=[
+                            ft.ResponsiveRow(
+                                controls=[
+                                    self.first,
+                                    self.second,
+                                    self.second,
+                                    self.second,
+                                    self.second,
+
+                                ]
+                            )
                         ]
+
                     )
-                )
-            ]
+
+                ]
+            )
         )
 
 
-    def logout_click(self, _):
-        self.auth_service.logout_user()
-        if not self.auth_service.is_authenticated:
-            self.page.go(LOGIN_PAGE_VIEW_URL)
+
 

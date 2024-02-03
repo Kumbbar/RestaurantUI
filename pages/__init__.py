@@ -10,5 +10,5 @@ class BasePage(Container):
         self.page = page
         self.expand = True
         self.offset = transform.Offset(0, 0, )
-
+        page.current_view = self
         self.auth_service = AuthService(page)
