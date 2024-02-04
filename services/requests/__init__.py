@@ -3,7 +3,9 @@ from typing import Callable
 
 import requests
 from requests import Response
+import flet_core as ft
 from flet_core import Page
+
 
 from services.cryptography import decrypt_token
 from services import BaseService
@@ -23,7 +25,13 @@ class BaseRequestService(BaseService):
             response = method(url, data=data, json=json, **kwargs)
             return response
         except requests.exceptions.ConnectionError:
-            raise Exception
+            dialog = ft.AlertDialog(
+                content_padding=ft.Padding(20, 20, 20, 20),
+                open=True,
+                title=ft.Text("Сервер недоступен")
+            )
+            self.page_link.dialog = dialog
+            self.page_link.update()
 
 
 class UserRequestService(BaseRequestService):

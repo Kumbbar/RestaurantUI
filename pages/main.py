@@ -2,10 +2,9 @@ import math
 
 import flet as ft
 from consts.colors import PastelColors
-from consts.sizes import BUTTON_HEIGHT
 from controls.menu import MainMenu
+from core.tiles_list import get_admin_tiles
 from pages import BasePage
-from settings import LOGIN_PAGE_VIEW_URL
 
 
 class MainPage(BasePage):
@@ -27,22 +26,14 @@ class MainPage(BasePage):
                 color='black'
             )
         )
-        self.first = ft.Container(
-                            height=300,
-                            width=700,
-                            bgcolor='red',
-                            col={"sm": 6, "md": 4, "xl": 2},
-            content=ft.Text('first')
-                        )
-        self.second = ft.Container(
-                            height=300,
-                            width=300,
-                            bgcolor='red',
-                            col={"sm": 6, "md": 4, "xl": 2},
-            content=ft.Text('second')
-
+        self.test = ft.Container(
+            bgcolor='green',
+            height=300,
+            width=300,
         )
-
+        self.workspace = ft.ResponsiveRow(
+                                controls=get_admin_tiles()
+        )
         self.content = ft.Container(
             padding=ft.Padding(20, 20, 20, 20),
             gradient=ft.LinearGradient(
@@ -59,19 +50,11 @@ class MainPage(BasePage):
                 controls=[
                     MainMenu(),
                     ft.Column(
-                        col={"sm": 8, "md": 6, "xl": 6, "xs": 11},
+                        col={"sm": 8, "md": 8, "xl": 8, "xs": 11},
                         scroll=ft.ScrollMode.AUTO,
+                        run_spacing=0,
                         controls=[
-                            ft.ResponsiveRow(
-                                controls=[
-                                    self.first,
-                                    self.second,
-                                    self.second,
-                                    self.second,
-                                    self.second,
-
-                                ]
-                            )
+                            self.workspace
                         ]
 
                     )
@@ -79,6 +62,8 @@ class MainPage(BasePage):
                 ]
             )
         )
+
+
 
 
 

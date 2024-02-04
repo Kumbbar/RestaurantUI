@@ -14,7 +14,7 @@ class AuthService(UserRequestService):
             f'{BACKEND_BASE_URL}{BACKEND_LOGIN_PATH}',
             json=dict(username=username, password=password)
         )
-        if response.ok:
+        if response and response.ok:
             self.__set_token(response.json()[SESSION_TOKEN_KEY])
 
     def logout_user(self):
