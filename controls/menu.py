@@ -1,6 +1,7 @@
 import flet_core as ft
 
 from consts.colors import PastelColors
+from controls.dialogs import LogoutDialog
 from core.tiles_list import get_admin_tiles
 from settings import LOGIN_PAGE_VIEW_URL
 
@@ -61,7 +62,7 @@ class MainMenu(ft.Container):
             self.page.current_view.workspace.controls.clear()
             self.page.current_view.workspace.controls = get_admin_tiles()
         if e.control.selected_index == 3:
-            self.logout_click(None)
+            self.page.dialog = LogoutDialog(logout_event=self.logout_click)
         self.page.update()
 
     def logout_click(self, _):
