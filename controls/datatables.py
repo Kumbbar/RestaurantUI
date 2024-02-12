@@ -5,6 +5,7 @@ import json
 from controls.dialogs import DatatableDeleteDialog
 from controls.text import CellText
 from services.requests.auth import RequestMethod
+from styles.buttons import CreateDataTableButton
 
 
 class PydanticDatatable(ft.Container):
@@ -17,16 +18,16 @@ class PydanticDatatable(ft.Container):
         super().__init__()
         self.datatable = ft.DataTable(
             col={"sm": 10, "md": 10, "xl": 10, "xs": 10},
-            width=700,
             bgcolor="white",
-            border=ft.border.all(2, "black"),
+            border=ft.border.all(1.5, "black"),
             border_radius=10,
-            vertical_lines=ft.border.BorderSide(3, "black"),
+            vertical_lines=ft.border.BorderSide(1.5, "black"),
             horizontal_lines=ft.border.BorderSide(1, "black"),
             sort_column_index=0,
             heading_row_color=ft.colors.BLACK12,
-            heading_row_height=100,
-            show_checkbox_column=True,
+            heading_row_height=50,
+            data_row_min_height=40,
+            data_row_max_height=40,
             divider_thickness=0,
             column_spacing=10,
         )
@@ -36,23 +37,37 @@ class PydanticDatatable(ft.Container):
             icon_color=ft.colors.BLACK,
             tooltip='refresh'
         )
-        self.create_button = ft.FilledButton(
+        self.create_button = ft.OutlinedButton(
             'CREATE',
+            style=CreateDataTableButton(),
         )
-        self.content = ft.ListView(
-            expand=1,
-            auto_scroll=True,
-            controls=[
-                self.create_button,
-                self.datatable,
-                ft.Column(
-                    [
-                        ft.Container(
-                            content=ft.Row(controls=[self.refresh_button], alignment=ft.MainAxisAlignment.END),
+        self.content = (
+            ft.Container(
+                padding=ft.padding.Padding(0, 0, 0, 0),
+                content=ft.Column(
+
+                    on_scroll_interval=0,
+                    controls=[
+                        ft.Row(
+
+                            controls=[
+                                self.create_button,
+                                self.refresh_button,
+                            ],
+                            alignment=ft.MainAxisAlignment.START
                         ),
+
+                        ft.ListView(
+                            expand=1,
+                            spacing=10,
+                            controls=[
+                                self.datatable
+                            ]
+                        )
                     ]
+
                 )
-            ]
+            )
         )
 
     def refresh_data_click(self, e):

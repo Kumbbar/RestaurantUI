@@ -49,15 +49,10 @@ class MainPage(BasePage):
             content=ft.ResponsiveRow(
                 controls=[
                     MainMenu(),
-                    ft.Column(
+                    ft.Container(
+                        content=self.workspace,
                         col={"sm": 8, "md": 8, "xl": 8, "xs": 11},
-                        scroll=ft.ScrollMode.AUTO,
-                        run_spacing=0,
-                        controls=[
-                            self.workspace,
-                        ]
                     )
-
                 ]
             )
         )
