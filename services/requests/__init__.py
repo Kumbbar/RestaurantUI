@@ -9,7 +9,7 @@ from flet_core import Page
 
 from services.cryptography import decrypt_token
 from services import BaseService
-from settings import SESSION_TOKEN_KEY
+from settings import SESSION_TOKEN_KEY, BACKEND_BASE_URL
 
 
 class RequestMethod(Enum):
@@ -20,18 +20,29 @@ class RequestMethod(Enum):
 
 
 class BaseRequestService(BaseService):
+
+    def __init__(self, page: Page):
+        super().__init__(page)
+        self.server_unavailable_response = Response()
+        self.server_unavailable_response.code = "error"
+        self.server_unavailable_response.error_type = "error"
+        self.server_unavailable_response.status_code = 500
+
+    def _show_server_unavailable(self):
+        dialog = ft.AlertDialog(
+            content_padding=ft.Padding(20, 20, 20, 20),
+            open=True,
+            title=ft.Text("Сервер недоступен")
+        )
+        self.page_link.dialog = dialog
+        self.page_link.update()
+
     def send_request(self, method: (RequestMethod, Callable), url, data=None, json=None, **kwargs) -> Response:
         try:
-            response = method(url, data=data, json=json, **kwargs)
-            return response
+            return method(f'{BACKEND_BASE_URL}{url}', data=data, json=json, **kwargs)
         except requests.exceptions.ConnectionError:
-            dialog = ft.AlertDialog(
-                content_padding=ft.Padding(20, 20, 20, 20),
-                open=True,
-                title=ft.Text("Сервер недоступен")
-            )
-            self.page_link.dialog = dialog
-            self.page_link.update()
+            self._show_server_unavailable()
+            return self.server_unavailable_response
 
 
 class UserRequestService(BaseRequestService):
@@ -70,6 +81,7 @@ class UserRequestService(BaseRequestService):
 
     def send_closed_request(self, method: (RequestMethod, Callable), url, data=None, json=None, **kwargs) -> Response:
         try:
-            return method(url, data=data, json=json, headers=self.all_headers, **kwargs)
+            return method(f'{BACKEND_BASE_URL}{url}', data=data, json=json, headers=self.all_headers, **kwargs)
         except requests.exceptions.ConnectionError:
-            raise Exception
+            self._show_server_unavailable()
+            return self.server_unavailable_response

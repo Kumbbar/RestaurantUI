@@ -54,9 +54,8 @@ class MainPage(BasePage):
                         scroll=ft.ScrollMode.AUTO,
                         run_spacing=0,
                         controls=[
-                            self.workspace
+                            self.workspace,
                         ]
-
                     )
 
                 ]

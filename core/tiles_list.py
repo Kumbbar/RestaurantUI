@@ -1,6 +1,8 @@
 from controls.items import NavigationTile
 import flet_core as ft
 
+from core.datatables_list import UsersTable
+
 PASS = ft.Container(
             height=400,
             width=300,
@@ -13,7 +15,7 @@ def get_admin_tiles():
         NavigationTile(
             'USERS',
             ft.icons.PERSON,
-            next_control=PASS
+            next_control=UsersTable()
         ),
         NavigationTile(
                 'PERMISSIONS',

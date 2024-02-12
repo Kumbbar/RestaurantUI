@@ -11,15 +11,16 @@ class AuthService(UserRequestService):
     def login_user(self, username, password):
         response = self.send_request(
             RequestMethod.POST,
-            f'{BACKEND_BASE_URL}{BACKEND_LOGIN_PATH}',
+            BACKEND_LOGIN_PATH,
             json=dict(username=username, password=password)
         )
         if response and response.ok:
             self.__set_token(response.json()[SESSION_TOKEN_KEY])
 
     def logout_user(self):
-        self.send_closed_request(
+        response = self.send_closed_request(
             RequestMethod.POST,
-            f'{BACKEND_BASE_URL}/auth/logout/',
+            f'/auth/logout/',
         )
-        self.page_link.client_storage.remove(SESSION_TOKEN_KEY)
+        if response or response.status_code == 401:
+            self.page_link.client_storage.remove(SESSION_TOKEN_KEY)
