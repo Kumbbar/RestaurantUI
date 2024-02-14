@@ -1,5 +1,7 @@
 from flet_core import Page
+import flet_core as ft
 
+from consts.colors import PastelColors
 from settings import MAIN_PAGE_VIEW_URL
 from .route import BasePageRouteHandler
 
@@ -7,6 +9,7 @@ from .route import BasePageRouteHandler
 class BaseApp(BasePageRouteHandler):
     def __init__(self, page: Page):
         super().__init__(page)
+        self.page.theme_mode = ft.ThemeMode.LIGHT
         self.page.fonts = {
             "SF Pro Bold": "fonts/SFProText-Bold.ttf",
             "SF Pro Heavy": "fonts/SFProText-Heavy.ttf",

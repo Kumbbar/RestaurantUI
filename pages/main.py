@@ -47,6 +47,7 @@ class MainPage(BasePage):
                 rotation=math.pi / 3,
             ),
             content=ft.ResponsiveRow(
+                alignment=ft.MainAxisAlignment.CENTER,
                 controls=[
                     MainMenu(),
                     ft.Container(

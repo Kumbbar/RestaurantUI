@@ -1,7 +1,10 @@
 import flet_core as ft
+from pydantic import BaseModel
 
+from controls.bottom_sheets import BottomSheetServiceUnavailable
 from controls.snack_bars import SnackBarDatatableDelete
 from services.requests import RequestMethod
+from settings import BACKEND_LOGIN_PATH
 
 
 class LogoutDialog(ft.AlertDialog):
@@ -50,3 +53,42 @@ class DatatableDeleteDialog(ft.AlertDialog):
     def no_click(self, _):
         self.open = False
         self.page.update()
+
+
+class BaseCreateUpdateDialog(ft.AlertDialog):
+    url: str
+    pydantic_model: BaseModel
+    title = 'Create data'
+    fields = {
+        'name': ft.TextField(),
+        'content_type': ft.TextField(),
+        'codename': ft.TextField()
+    }
+
+    def __init__(self, id=None):
+        if id:
+            pass
+        super().__init__()
+        self.open = True
+        self.modal = True
+        controls = [ft.Text(self.__class__.title)]
+        controls.extend(list(self.__class__.fields.values()))
+        self.content = ft.Column(
+            width=600,
+            controls=controls
+        )
+        self.actions = [
+            ft.TextButton("Save", on_click=self.save_click),
+            ft.TextButton("Cancel", on_click=self.no_click),
+        ]
+        self.actions_alignment = ft.MainAxisAlignment.END
+
+    def save_click(self, _):
+        dialog = BottomSheetServiceUnavailable()
+        self.page.bottom_sheet = dialog
+        self.page.update()
+
+    def no_click(self, _):
+        self.open = False
+        self.page.update()
+

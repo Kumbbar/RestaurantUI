@@ -6,7 +6,7 @@ from requests import Response
 import flet_core as ft
 from flet_core import Page
 
-
+from controls.bottom_sheets import BottomSheetServiceUnavailable
 from services.cryptography import decrypt_token
 from services import BaseService
 from settings import SESSION_TOKEN_KEY, BACKEND_BASE_URL
@@ -29,12 +29,8 @@ class BaseRequestService(BaseService):
         self.server_unavailable_response.status_code = 500
 
     def _show_server_unavailable(self):
-        dialog = ft.AlertDialog(
-            content_padding=ft.Padding(20, 20, 20, 20),
-            open=True,
-            title=ft.Text("Сервер недоступен")
-        )
-        self.page_link.dialog = dialog
+        bottom_sheet = BottomSheetServiceUnavailable()
+        self.page_link.bottom_sheet = bottom_sheet
         self.page_link.update()
 
     def send_request(self, method: (RequestMethod, Callable), url, data=None, json=None, **kwargs) -> Response:

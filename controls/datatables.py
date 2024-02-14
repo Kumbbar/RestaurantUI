@@ -2,7 +2,7 @@ import flet as ft
 from pydantic import BaseModel
 import json
 
-from controls.dialogs import DatatableDeleteDialog
+from controls.dialogs import DatatableDeleteDialog, BaseCreateUpdateDialog
 from controls.text import CellText
 from services.requests.auth import RequestMethod
 from styles.buttons import CreateDataTableButton
@@ -37,9 +37,11 @@ class PydanticDatatable(ft.Container):
             icon_color=ft.colors.BLACK,
             tooltip='refresh'
         )
+        self.test_dialog = BaseCreateUpdateDialog()
         self.create_button = ft.OutlinedButton(
             'CREATE',
             style=CreateDataTableButton(),
+            on_click=self.show_create_dialog
         )
         self.content = (
             ft.Container(
@@ -69,6 +71,11 @@ class PydanticDatatable(ft.Container):
                 )
             )
         )
+
+    def show_create_dialog(self, _):
+        self.test_dialog.open = True
+        self.page.dialog = self.test_dialog
+        self.page.update()
 
     def refresh_data_click(self, e):
         self.refresh_data()

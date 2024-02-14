@@ -9,3 +9,4 @@ class SnackBarDatatableDelete(ft.SnackBar):
         self.bgcolor = ft.colors.RED_ACCENT_200
         self.open = True
 
+

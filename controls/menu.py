@@ -10,7 +10,7 @@ class MainMenu(ft.Container):
     def __init__(self):
         super().__init__()
         self.col = {
-                "xs": 0,
+                "xs": 12,
                 "sm": 3.8,
                 "md": 3,
                 "xl": 3
