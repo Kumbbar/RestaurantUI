@@ -93,11 +93,13 @@ class LoginPage(BasePage):
             width=360,
             controls=[
                 ft.Container(
+                    padding=ft.Padding(0, 0, 0, 0),
+                    margin=ft.Margin(0, 0, 0, 0),
                     content=ft.Text(
                         value='Login',
                         color=PastelColors.WHITE_BASE,
                         font_family='SF Pro Bold',
-                        size=30,
+                        size=40,
                         weight=ft.FontWeight.BOLD,
                     ),
                 ),
@@ -123,7 +125,7 @@ class LoginPage(BasePage):
                         value='Continue',
                         font_family='Poppins Medium',
                         size=16,
-
+                        weight=ft.FontWeight.BOLD
                     )
                 ),
                 ft.Container(height=5),

@@ -10,6 +10,7 @@ from pages import BasePage
 class MainPage(BasePage):
     def __init__(self, page: ft.Page):
         super().__init__(page)
+        print(page, 'jaga')
         self.view_hide_text = ft.Text(
             value='View',
             color=PastelColors.WHITE_BASE,

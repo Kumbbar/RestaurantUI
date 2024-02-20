@@ -1,3 +1,5 @@
+import copy
+
 import flet_core as ft
 from pydantic import BaseModel
 
@@ -55,40 +57,97 @@ class DatatableDeleteDialog(ft.AlertDialog):
         self.page.update()
 
 
-class BaseCreateUpdateDialog(ft.AlertDialog):
-    url: str
-    pydantic_model: BaseModel
-    title = 'Create data'
+class BaseCreateUpdateDialog(ft.UserControl):
+    url: str = '/admin/permissions/'
     fields = {
         'name': ft.TextField(),
         'content_type': ft.TextField(),
         'codename': ft.TextField()
     }
 
-    def __init__(self, id=None):
-        if id:
-            pass
+    def __init__(self, id=''):
         super().__init__()
-        self.open = True
-        self.modal = True
-        controls = [ft.Text(self.__class__.title)]
-        controls.extend(list(self.__class__.fields.values()))
+        self.id = id
+        self.fields = copy.deepcopy(self.__class__.fields)
+        controls = list(self.fields.values())
         self.content = ft.Column(
             width=600,
             controls=controls
         )
+        if id:
+            title = ft.Text(f'Update {id}', weight=ft.FontWeight.BOLD)
+        else:
+            title = ft.Text(f'Create', weight=ft.FontWeight.BOLD)
+
         self.actions = [
             ft.TextButton("Save", on_click=self.save_click),
             ft.TextButton("Cancel", on_click=self.no_click),
         ]
         self.actions_alignment = ft.MainAxisAlignment.END
 
+        self.content = ft.AlertDialog(
+            title=title,
+            modal=True,
+            open=True,
+            actions=self.actions,
+            content=self.content,
+            actions_alignment=self.actions_alignment,
+
+        )
+
+    def did_mount(self):
+        if self.id:
+            json_data = self.get_data()
+            self.set_fields_data(json_data)
+            self.update()
+
+    def set_fields_data(self, data):
+        for key in self.fields.keys():
+            self.fields[key].value = data.get(key)
+
+    def get_fields_data(self):
+        result = {}
+        for key in self.fields.keys():
+            result[key] = self.fields[key].value
+        return result
+
+    def send_fields_data(self):
+        fields_data = self.get_fields_data()
+        id_url = ''
+        if self.id:
+            id_url = f'{self.id}/'
+
+        response = self.page.current_view.auth_service.send_closed_request(
+            RequestMethod.PUT,
+            f'{self.__class__.url}{id_url}',
+            json=fields_data
+        )
+        if response.ok:
+            self.close()
+
+    def get_data(self):
+        response = self.page.current_view.auth_service.send_closed_request(
+            RequestMethod.GET,
+            f'{self.__class__.url}{self.id}'
+        )
+        if response.ok:
+            return response.json()
+
+    def build(self):
+        return self.content
+
     def save_click(self, _):
-        dialog = BottomSheetServiceUnavailable()
-        self.page.bottom_sheet = dialog
-        self.page.update()
+        self.send_fields_data()
+        self.close()
+        # dialog = BottomSheetServiceUnavailable()
+        # self.page.bottom_sheet = dialog
+        # self.page.update()
 
     def no_click(self, _):
-        self.open = False
-        self.page.update()
+        self.close()
+
+    def close(self):
+        self.content.open = False
+        self.update()
+
 

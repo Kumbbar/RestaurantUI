@@ -37,7 +37,6 @@ class PydanticDatatable(ft.Container):
             icon_color=ft.colors.BLACK,
             tooltip='refresh'
         )
-        self.test_dialog = BaseCreateUpdateDialog()
         self.create_button = ft.OutlinedButton(
             'CREATE',
             style=CreateDataTableButton(),
@@ -72,10 +71,7 @@ class PydanticDatatable(ft.Container):
             )
         )
 
-    def show_create_dialog(self, _):
-        self.test_dialog.open = True
-        self.page.dialog = self.test_dialog
-        self.page.update()
+
 
     def refresh_data_click(self, e):
         self.refresh_data()
@@ -127,7 +123,8 @@ class PydanticDatatable(ft.Container):
                 data_row.cells.append(
                     ft.DataCell(
                         CellText(getattr(row, key)),
-                        data=row.id
+                        data=row.id,
+                        on_double_tap=self.show_update_dialog
                     )
                 )
             data_row.cells.append(
@@ -143,6 +140,16 @@ class PydanticDatatable(ft.Container):
             )
             result_rows.append(data_row)
         return result_rows
+
+    def show_create_dialog(self, _):
+        create_dialog = BaseCreateUpdateDialog()
+        self.page.dialog = create_dialog
+        self.page.update()
+
+    def show_update_dialog(self, e):
+        create_dialog = BaseCreateUpdateDialog(e.control.data)
+        self.page.dialog = create_dialog
+        self.page.update()
 
     def show_delete_dialog(self, e):
         self.page.dialog = DatatableDeleteDialog(e.control.data, self)
