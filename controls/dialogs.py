@@ -141,9 +141,6 @@ class BaseCreateUpdateDialog(ft.UserControl):
     def save_click(self, _):
         self.send_fields_data()
         self.close()
-        # dialog = BottomSheetServiceUnavailable()
-        # self.page.bottom_sheet = dialog
-        # self.page.update()
 
     def no_click(self, _):
         self.close()
