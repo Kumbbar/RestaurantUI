@@ -71,8 +71,6 @@ class PydanticDatatable(ft.Container):
             )
         )
 
-
-
     def refresh_data_click(self, e):
         self.refresh_data()
 

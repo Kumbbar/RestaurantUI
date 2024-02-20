@@ -60,16 +60,18 @@ class DatatableDeleteDialog(ft.AlertDialog):
 class BaseCreateUpdateDialog(ft.UserControl):
     url: str = '/admin/permissions/'
     fields = {
-        'name': ft.TextField(),
-        'content_type': ft.TextField(),
-        'codename': ft.TextField()
+        'name': ft.TextField(label='name'),
+        'content_type': ft.TextField(label='content_type'),
+        'codename': ft.TextField(label='codename')
     }
 
     def __init__(self, id=''):
         super().__init__()
         self.id = id
+
         self.fields = copy.deepcopy(self.__class__.fields)
         controls = list(self.fields.values())
+
         self.content = ft.Column(
             width=600,
             controls=controls
