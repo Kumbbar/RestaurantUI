@@ -1,18 +1,14 @@
 import flet as ft
-from pydantic import BaseModel
-import json
 
 from controls.dialogs import DatatableDeleteDialog, BaseCreateUpdateDialog
 from controls.text import CellText
-from services.requests.auth import RequestMethod
+from data_models import BaseDataModel
 from styles.buttons import CreateDataTableButton
 
 
 class PydanticDatatable(ft.Container):
-    table_pydantic_model: BaseModel
-    table_response_model: BaseModel
-    edit_form_pydantic_model: BaseModel
-    url: str
+    visible_columns: list
+    data_model: BaseDataModel
 
     def __init__(self):
         super().__init__()
@@ -83,7 +79,7 @@ class PydanticDatatable(ft.Container):
         columns = [
             ft.DataColumn(
                 CellText(key)
-            ) for key in self.__class__.table_pydantic_model.model_fields.keys()
+            ) for key in self.__class__.visible_columns
         ]
         columns.append(
             ft.DataColumn(CellText('action'))
@@ -91,33 +87,15 @@ class PydanticDatatable(ft.Container):
         return columns
 
     def __get_data(self):
-        try:
-            pydantic_response = self.__get_pydantic_response()
-        except ConnectionError:
-            return list()
-        rows = self.__convert_to_datatable_rows(pydantic_response)
+        self.data = self.__class__.data_model(self.page)
+        rows = self.__convert_to_datatable_rows()
         return rows
 
-    def __get_pydantic_response(self):
-        response = self.page.current_view.auth_service.send_closed_request(
-            RequestMethod.GET,
-            self.__class__.url
-        )
-        if not response.ok:
-            raise ConnectionError
-        data = self.__validate_response(response)
-        return data
-
-    def __validate_response(self, response):
-        return self.__class__.table_response_model.model_validate_json(
-            json.dumps(response.json())
-        )
-
-    def __convert_to_datatable_rows(self, response):
+    def __convert_to_datatable_rows(self):
         result_rows = []
-        for row in response.results:
+        for row in self.data.result_list:
             data_row = ft.DataRow(cells=[])
-            for key in self.__class__.table_pydantic_model.model_fields.keys():
+            for key in self.__class__.visible_columns:
                 data_row.cells.append(
                     ft.DataCell(
                         CellText(getattr(row, key)),
