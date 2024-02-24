@@ -4,6 +4,7 @@ import flet_core as ft
 from pydantic import BaseModel
 
 from controls.bottom_sheets import BottomSheetServiceUnavailable
+from controls.dropdown import CustomDropDown
 from controls.snack_bars import SnackBarDatatableDelete
 from services.requests import RequestMethod
 from settings import BACKEND_LOGIN_PATH
@@ -61,7 +62,7 @@ class BaseCreateUpdateDialog(ft.UserControl):
     url: str = '/admin/permissions/'
     fields = {
         'name': ft.TextField(label='name'),
-        'content_type': ft.TextField(label='content_type'),
+        'content_type': CustomDropDown(),
         'codename': ft.TextField(label='codename')
     }
 
@@ -71,6 +72,9 @@ class BaseCreateUpdateDialog(ft.UserControl):
 
         self.fields = copy.deepcopy(self.__class__.fields)
         controls = list(self.fields.values())
+        # for i in range(len(controls)):
+        #     if isinstance(controls[i], CustomDropDown):
+        #         controls[i] = controls[i]()
 
         self.content = ft.Column(
             width=600,
@@ -101,11 +105,13 @@ class BaseCreateUpdateDialog(ft.UserControl):
         if self.id:
             json_data = self.get_data()
             self.set_fields_data(json_data)
-            self.update()
 
     def set_fields_data(self, data):
         for key in self.fields.keys():
-            self.fields[key].value = data.get(key)
+            if hasattr(self.fields[key], 'content'):
+                self.fields[key].content.value = data.get(key)
+            else:
+                self.fields[key].value = data.get(key)
 
     def get_fields_data(self):
         result = {}
@@ -115,12 +121,15 @@ class BaseCreateUpdateDialog(ft.UserControl):
 
     def send_fields_data(self):
         fields_data = self.get_fields_data()
-        id_url = ''
         if self.id:
             id_url = f'{self.id}/'
+            method = RequestMethod.PUT
+        else:
+            id_url = ''
+            method = RequestMethod.POST
 
         response = self.page.current_view.auth_service.send_closed_request(
-            RequestMethod.PUT,
+            method,
             f'{self.__class__.url}{id_url}',
             json=fields_data
         )

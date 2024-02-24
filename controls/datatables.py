@@ -9,6 +9,7 @@ from styles.buttons import CreateDataTableButton
 class PydanticDatatable(ft.Container):
     visible_columns: list
     data_model: BaseDataModel
+    url: str
 
     def __init__(self):
         super().__init__()

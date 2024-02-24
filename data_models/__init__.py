@@ -1,9 +1,7 @@
 import json
-from abc import ABC, abstractmethod
 
 from pydantic import BaseModel
 
-from pydantic_models.permissions import Permission, PermissionResponse
 from services.requests import RequestMethod
 
 
@@ -31,10 +29,7 @@ class BaseDataModel(object):
         return data
 
     def __get_data(self):
-        try:
-            return self.__get_pydantic_response()
-        except ConnectionError:
-            return list()
+        return self.__get_pydantic_response()
 
     def __validate_response(self, response):
         return self.__class__.pydantic_model.model_validate_json(
