@@ -72,9 +72,6 @@ class BaseCreateUpdateDialog(ft.UserControl):
 
         self.fields = copy.deepcopy(self.__class__.fields)
         controls = list(self.fields.values())
-        # for i in range(len(controls)):
-        #     if isinstance(controls[i], CustomDropDown):
-        #         controls[i] = controls[i]()
 
         self.content = ft.Column(
             width=600,
