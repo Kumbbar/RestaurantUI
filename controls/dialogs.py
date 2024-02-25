@@ -1,6 +1,10 @@
 import copy
+from abc import ABC, abstractmethod
+from typing import List, Dict
 
 import flet_core as ft
+from flet_core import UserControl, TextField
+from flet_core.form_field_control import FormFieldControl
 from pydantic import BaseModel
 
 from controls.bottom_sheets import BottomSheetServiceUnavailable
@@ -58,22 +62,24 @@ class DatatableDeleteDialog(ft.AlertDialog):
         self.page.update()
 
 
-class BaseCreateUpdateDialog(ft.UserControl):
+class BaseCreateUpdateDialog(ABC, ft.UserControl):
     url: str = '/admin/permissions/'
-    fields = {
-        'name': ft.TextField(label='name'),
-        'content_type': CustomDropDown(),
-        'codename': ft.TextField(label='codename')
-    }
+
+    def get_fields(self) -> dict[str, TextField | CustomDropDown]:
+        return {
+            'name': ft.TextField(label='name'),
+            'content_type': CustomDropDown(),
+            'codename': ft.TextField(label='codename')
+        }
 
     def __init__(self, id=''):
         super().__init__()
         self.id = id
 
-        self.fields = copy.deepcopy(self.__class__.fields)
+        self.fields = self.get_fields()
         controls = list(self.fields.values())
 
-        self.content = ft.Column(
+        content = ft.Column(
             width=600,
             controls=controls
         )
@@ -93,7 +99,7 @@ class BaseCreateUpdateDialog(ft.UserControl):
             modal=True,
             open=True,
             actions=self.actions,
-            content=self.content,
+            content=content,
             actions_alignment=self.actions_alignment,
 
         )
@@ -102,13 +108,11 @@ class BaseCreateUpdateDialog(ft.UserControl):
         if self.id:
             json_data = self.get_data()
             self.set_fields_data(json_data)
+            self.update()
 
     def set_fields_data(self, data):
         for key in self.fields.keys():
-            if hasattr(self.fields[key], 'content'):
-                self.fields[key].content.value = data.get(key)
-            else:
-                self.fields[key].value = data.get(key)
+            self.fields[key].value = data.get(key)
 
     def get_fields_data(self):
         result = {}
@@ -136,7 +140,7 @@ class BaseCreateUpdateDialog(ft.UserControl):
     def get_data(self):
         response = self.page.current_view.auth_service.send_closed_request(
             RequestMethod.GET,
-            f'{self.__class__.url}{self.id}'
+            f'{self.__class__.url}{self.id}/'
         )
         if response.ok:
             return response.json()

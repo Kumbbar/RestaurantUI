@@ -12,11 +12,13 @@ class CustomDropDown(ft.UserControl):
 
         self.content = ft.Dropdown(
             width=600,
-            on_change=self.change_option
+            on_change=self.change_option,
+            value=self.value
         )
 
     def change_option(self, _):
         self.value = self.content.value
+        self.update()
 
     def get_key_and_name(self, data):
         result = list()
@@ -28,6 +30,10 @@ class CustomDropDown(ft.UserControl):
                 )
             )
         return result
+
+    def update(self):
+        self.content.value = self.value
+        super().update()
 
     def build(self):
         return self.content
