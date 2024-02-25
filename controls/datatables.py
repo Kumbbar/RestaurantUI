@@ -9,6 +9,7 @@ from styles.buttons import CreateDataTableButton
 class PydanticDatatable(ft.Container):
     visible_columns: list
     data_model: BaseDataModel
+    dialog: BaseCreateUpdateDialog
     url: str
 
     def __init__(self):
@@ -119,16 +120,16 @@ class PydanticDatatable(ft.Container):
         return result_rows
 
     def show_create_dialog(self, _):
-        create_dialog = BaseCreateUpdateDialog()
+        create_dialog = self.__class__.dialog()
         self.page.dialog = create_dialog
         self.page.update()
 
     def show_update_dialog(self, e):
-        create_dialog = BaseCreateUpdateDialog(e.control.data)
+        create_dialog = self.__class__.dialog(e.control.data)
         self.page.dialog = create_dialog
         self.page.update()
 
     def show_delete_dialog(self, e):
-        self.page.dialog = DatatableDeleteDialog(e.control.data, self)
+        self.page.dialog = self.__class__.dialog(e.control.data, self)
         self.page.update()
 

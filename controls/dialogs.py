@@ -63,14 +63,11 @@ class DatatableDeleteDialog(ft.AlertDialog):
 
 
 class BaseCreateUpdateDialog(ABC, ft.UserControl):
-    url: str = '/admin/permissions/'
+    url: str
 
+    @abstractmethod
     def get_fields(self) -> dict[str, TextField | CustomDropDown]:
-        return {
-            'name': ft.TextField(label='name'),
-            'content_type': CustomDropDown(),
-            'codename': ft.TextField(label='codename')
-        }
+        pass
 
     def __init__(self, id=''):
         super().__init__()

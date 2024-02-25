@@ -1,7 +1,7 @@
 from controls.items import NavigationTile
 import flet_core as ft
 
-from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable
+from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable, GroupsTypesTable
 
 PASS = ft.Container(
             height=400,
@@ -30,7 +30,7 @@ def get_admin_tiles():
         NavigationTile(
                     'GROUPS',
                     ft.icons.GROUP,
-                    next_control=PASS
+                    next_control=GroupsTypesTable()
         ),
         NavigationTile(
             'CONTENT TYPES',
