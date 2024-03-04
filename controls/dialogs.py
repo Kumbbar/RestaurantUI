@@ -109,7 +109,10 @@ class BaseCreateUpdateDialog(ABC, ft.UserControl):
 
     def set_fields_data(self, data):
         for key in self.fields.keys():
-            self.fields[key].value = data.get(key)
+            if isinstance(self.fields[key], ft.Image):
+                self.fields[key].src = data.get(key)
+            else:
+                self.fields[key].value = data.get(key)
 
     def get_fields_data(self):
         result = {}

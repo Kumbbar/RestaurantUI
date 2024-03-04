@@ -1,8 +1,11 @@
 from controls.datatables import PydanticDatatable
-from core.data_models_list import PermissionsDataModel, UsersDataModel, ContentTypesDataModel, GroupsDataModel
-from core.dialogs_list import PermissionsCreateUpdateDialog, UsersCreateUpdateDialog, ContentTypesCreateUpdateDialog
-from pydantic_models.groups import GroupResponse
+from core.data_models_list import PermissionsDataModel, UsersDataModel, ContentTypesDataModel, GroupsDataModel, \
+    DishesDataModel
+from core.dialogs_list import PermissionsCreateUpdateDialog, UsersCreateUpdateDialog, ContentTypesCreateUpdateDialog, \
+    GroupsCreateUpdateDialog, DishesCreateUpdateDialog
 
+
+# ADMIN
 
 class UsersTable(PydanticDatatable):
     visible_columns = ['id', 'username', 'first_name', 'last_name', 'is_staff', 'email']
@@ -28,5 +31,19 @@ class ContentTypesTable(PydanticDatatable):
 class GroupsTypesTable(PydanticDatatable):
     visible_columns = ['id', 'name']
     url = '/admin/groups/'
-    dialog = ContentTypesCreateUpdateDialog
+    dialog = GroupsCreateUpdateDialog
     data_model = GroupsDataModel
+
+
+# FOOD
+
+class DishesTable(PydanticDatatable):
+    visible_columns = [
+        'name',
+        'dish_type',
+        'price',
+        'image'
+    ]
+    url = '/food/dishes/'
+    dialog = DishesCreateUpdateDialog
+    data_model = DishesDataModel

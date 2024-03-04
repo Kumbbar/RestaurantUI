@@ -2,7 +2,7 @@ import flet_core as ft
 
 from consts.colors import PastelColors
 from controls.dialogs import LogoutDialog
-from core.tiles_list import get_admin_tiles
+from core.tiles_list import get_admin_tiles, get_menu_tiles
 from settings import LOGIN_PAGE_VIEW_URL
 
 
@@ -25,9 +25,9 @@ class MainMenu(ft.Container):
                         icon=ft.icons.ADMIN_PANEL_SETTINGS_OUTLINED,
                     ),
                     ft.NavigationRailDestination(
-                        label='MENU',
-                        selected_icon=ft.icons.MENU_BOOK_SHARP,
-                        icon=ft.icons.MENU_BOOK,
+                        label='FOOD',
+                        selected_icon=ft.icons.FASTFOOD,
+                        icon=ft.icons.FASTFOOD,
                     ),
                     ft.NavigationRailDestination(
                         label='SETTINGS',
@@ -59,9 +59,12 @@ class MainMenu(ft.Container):
             )
 
     def change_main_menu(self, e):
-        if e.control.selected_index == 0:
+        if e.control.selected_index == 0:  # ADMIN
             self.page.current_view.workspace.controls.clear()
             self.page.current_view.workspace.controls = get_admin_tiles()
+        if e.control.selected_index == 1:  # MENU:
+            self.page.current_view.workspace.controls.clear()
+            self.page.current_view.workspace.controls = get_menu_tiles()
         if e.control.selected_index == 3:
             self.page.dialog = LogoutDialog(logout_event=self.logout_click)
         self.page.update()

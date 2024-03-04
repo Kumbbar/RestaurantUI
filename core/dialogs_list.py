@@ -1,3 +1,5 @@
+from flet_core import NumbersOnlyInputFilter
+
 from controls.dialogs import BaseCreateUpdateDialog
 from controls.dropdown import CustomDropDown
 import flet_core as ft
@@ -47,3 +49,23 @@ class GroupsCreateUpdateDialog(BaseCreateUpdateDialog):
             'name': ft.TextField(label='name')
         }
 
+
+class DishesCreateUpdateDialog(BaseCreateUpdateDialog):
+    url = '/food/dishes/'
+
+    def get_fields(self):
+        return {
+            'name': ft.TextField(label='name'),
+            'description': ft.TextField(label='description', multiline=True),
+            'weight': ft.TextField(
+                label='weight',
+                keyboard_type=ft.KeyboardType.NUMBER,
+                input_filter=NumbersOnlyInputFilter()
+            ),
+            'price': ft.TextField(
+                label='weight',
+                keyboard_type=ft.KeyboardType.NUMBER,
+                input_filter=NumbersOnlyInputFilter()
+            ),
+            'image': ft.Image()
+        }
