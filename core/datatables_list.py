@@ -42,7 +42,7 @@ class DishesTable(PydanticDatatable):
         'name',
         'dish_type',
         'price',
-        'image'
+        'description'
     ]
     url = '/food/dishes/'
     dialog = DishesCreateUpdateDialog

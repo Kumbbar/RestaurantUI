@@ -4,6 +4,8 @@ from controls.dialogs import BaseCreateUpdateDialog
 from controls.dropdown import CustomDropDown
 import flet_core as ft
 
+from controls.file_pickers import FilePickerImage
+
 
 class UsersCreateUpdateDialog(BaseCreateUpdateDialog):
     url = '/admin/users/'
@@ -67,5 +69,5 @@ class DishesCreateUpdateDialog(BaseCreateUpdateDialog):
                 keyboard_type=ft.KeyboardType.NUMBER,
                 input_filter=NumbersOnlyInputFilter()
             ),
-            'image': ft.Image()
+            'image': FilePickerImage()
         }

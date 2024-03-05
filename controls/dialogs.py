@@ -9,6 +9,7 @@ from pydantic import BaseModel
 
 from controls.bottom_sheets import BottomSheetServiceUnavailable
 from controls.dropdown import CustomDropDown
+from controls.file_pickers import FilePickerImage, FileField
 from controls.snack_bars import SnackBarDatatableDelete
 from services.requests import RequestMethod
 from settings import BACKEND_LOGIN_PATH
@@ -109,19 +110,27 @@ class BaseCreateUpdateDialog(ABC, ft.UserControl):
 
     def set_fields_data(self, data):
         for key in self.fields.keys():
-            if isinstance(self.fields[key], ft.Image):
-                self.fields[key].src = data.get(key)
-            else:
-                self.fields[key].value = data.get(key)
+            self.fields[key].value = data.get(key)
+            self.fields[key].update()
 
     def get_fields_data(self):
         result = {}
         for key in self.fields.keys():
+            if isinstance(self.fields[key], FileField):
+                continue
             result[key] = self.fields[key].value
+        return result
+
+    def get_files_data(self):
+        result = {}
+        for key in self.fields.keys():
+            if isinstance(self.fields[key], FileField) and getattr(self.fields[key], 'file_changed') is True:
+                result[key] = open(self.fields[key].value, 'rb')
         return result
 
     def send_fields_data(self):
         fields_data = self.get_fields_data()
+        files_data = self.get_files_data()
         if self.id:
             id_url = f'{self.id}/'
             method = RequestMethod.PUT
@@ -132,7 +141,8 @@ class BaseCreateUpdateDialog(ABC, ft.UserControl):
         response = self.page.current_view.auth_service.send_closed_request(
             method,
             f'{self.__class__.url}{id_url}',
-            json=fields_data
+            data=fields_data,
+            files=files_data
         )
         if response.ok:
             self.close()
