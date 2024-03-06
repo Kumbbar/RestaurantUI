@@ -15,12 +15,18 @@ class FilePickerImage(FileField, ft.UserControl):
         self.image = ft.Image(
             width=200,
             height=200,
-            border_radius=10
+            border_radius=10,
+            fit=ft.ImageFit.COVER,
+            src='assets/images/dish.svg'
         )
         self.content = ft.Container(
             height=200,
             width=200,
-            content=self.image,
+            content=ft.Column([
+                    ft.Text('dish image'),
+                    self.image
+                ]
+            ),
             on_click=self.image_click,
             alignment=ft.alignment.center
         )
@@ -31,6 +37,8 @@ class FilePickerImage(FileField, ft.UserControl):
         self.page.update()
 
     def image_picked(self, e):
+        if not e.files:
+            return
         file = e.files[0]
         self.value = file.path
         self.file_changed = True
