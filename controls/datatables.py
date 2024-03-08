@@ -1,13 +1,17 @@
+from typing import List, Dict
+
 import flet as ft
 
 from controls.dialogs import DatatableDeleteDialog, BaseCreateUpdateDialog
 from controls.text import CellText
 from data_models import BaseDataModel
+from data_models.dict_model import DictDataModeL
 from styles.buttons import CreateDataTableButton
 
 
 class PydanticDatatable(ft.Container):
-    visible_columns: list
+    visible_columns: List
+    foreign_data_template = dict()
     data_model: BaseDataModel
     dialog: BaseCreateUpdateDialog
     url: str
@@ -29,6 +33,7 @@ class PydanticDatatable(ft.Container):
             divider_thickness=0,
             column_spacing=10,
         )
+        self.foreign_data = dict()
         self.refresh_button = ft.IconButton(
             icon=ft.icons.REFRESH_ROUNDED,
             on_click=self.refresh_data_click,
@@ -90,21 +95,35 @@ class PydanticDatatable(ft.Container):
 
     def __get_data(self):
         self.data = self.__class__.data_model(self.page)
+        self.__get_foreign_data()
         rows = self.__convert_to_datatable_rows()
         return rows
+
+    def __get_foreign_data(self):
+        for key, value in self.__class__.foreign_data_template.items():
+            self.foreign_data[key] = value(self.page)
 
     def __convert_to_datatable_rows(self):
         result_rows = []
         for row in self.data.result_list:
             data_row = ft.DataRow(cells=[])
             for key in self.__class__.visible_columns:
-                data_row.cells.append(
-                    ft.DataCell(
-                        CellText(getattr(row, key)),
-                        data=row.id,
-                        on_double_tap=self.show_update_dialog
+                if key in self.foreign_data.keys():
+                    data_row.cells.append(
+                        ft.DataCell(
+                            CellText(self.foreign_data[key].foreign_data[getattr(row, key)]),
+                            data=row.id,
+                            on_double_tap=self.show_update_dialog
+                        )
                     )
-                )
+                else:
+                    data_row.cells.append(
+                        ft.DataCell(
+                            CellText(getattr(row, key)),
+                            data=row.id,
+                            on_double_tap=self.show_update_dialog
+                        )
+                    )
             data_row.cells.append(
                 ft.DataCell(
                     ft.IconButton(

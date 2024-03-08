@@ -15,7 +15,7 @@ class MainApp(BaseApp):
 
 if settings.DEBUG:
     logging.basicConfig(level=logging.DEBUG)
-    logging.getLogger("flet_core").setLevel(logging.INFO)
+    logging.getLogger("flet_core").setLevel(logging.FATAL)
 
 app(
     target=MainApp,

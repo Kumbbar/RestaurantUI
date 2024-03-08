@@ -5,6 +5,7 @@ from controls.dropdown import CustomDropDown
 import flet_core as ft
 
 from controls.file_pickers import FilePickerImage
+from core.dropdowns_list import ContentTypeDropDown, DishTypeDropDown
 
 
 class UsersCreateUpdateDialog(BaseCreateUpdateDialog):
@@ -28,7 +29,7 @@ class PermissionsCreateUpdateDialog(BaseCreateUpdateDialog):
     def get_fields(self):
         return {
             'name': ft.TextField(label='name'),
-            'content_type': CustomDropDown(),
+            'content_type': ContentTypeDropDown('content type'),
             'codename': ft.TextField(label='codename')
         }
 
@@ -58,16 +59,26 @@ class DishesCreateUpdateDialog(BaseCreateUpdateDialog):
     def get_fields(self):
         return {
             'name': ft.TextField(label='name'),
-            'description': ft.TextField(label='description', multiline=True),
             'weight': ft.TextField(
                 label='weight',
                 keyboard_type=ft.KeyboardType.NUMBER,
                 input_filter=NumbersOnlyInputFilter()
             ),
+            'dish_type': DishTypeDropDown('dish type'),
             'price': ft.TextField(
-                label='weight',
+                label='price',
                 keyboard_type=ft.KeyboardType.NUMBER,
                 input_filter=NumbersOnlyInputFilter()
             ),
-            'image': FilePickerImage()
+            'image': FilePickerImage(),
+            'description': ft.TextField(label='description', multiline=True),
+        }
+
+
+class DishTypesCreateUpdateDialog(BaseCreateUpdateDialog):
+    url = '/food/dish_types/'
+
+    def get_fields(self):
+        return {
+            'name': ft.TextField(label='name')
         }

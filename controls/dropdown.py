@@ -1,17 +1,20 @@
 import flet as ft
 
 from core.data_models_list import ContentTypesDataModel
+from data_models import BaseDataModel
 
 
 class CustomDropDown(ft.UserControl):
-    name: str = 'model'
+    name: str
+    data_model: BaseDataModel
 
-    def __init__(self):
+    def __init__(self, label: str):
         super().__init__()
         self.value = None
 
         self.content = ft.Dropdown(
             width=600,
+            label=label,
             on_change=self.change_option,
             value=self.value
         )
@@ -39,7 +42,7 @@ class CustomDropDown(ft.UserControl):
         return self.content
 
     def did_mount(self):
-        data = ContentTypesDataModel(self.page)
+        data = self.__class__.data_model(self.page)
         self.add_options(data.result_list)
         self.update()
 

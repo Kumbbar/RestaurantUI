@@ -1,5 +1,6 @@
 from data_models import BaseDataModel
 from pydantic_models.content_types import ContentTypeResponse
+from pydantic_models.dish_types import DishTypeResponse
 from pydantic_models.dishes import DishResponse
 from pydantic_models.groups import GroupResponse
 from pydantic_models.permissions import PermissionResponse
@@ -29,3 +30,8 @@ class GroupsDataModel(BaseDataModel):
 class DishesDataModel(BaseDataModel):
     url = '/food/dishes/'
     pydantic_model = DishResponse
+
+
+class DishTypesDataModel(BaseDataModel):
+    url = '/food/dish_types/'
+    pydantic_model = DishTypeResponse

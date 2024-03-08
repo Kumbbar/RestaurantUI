@@ -33,7 +33,7 @@ class MainPage(BasePage):
             width=300,
         )
         self.workspace = ft.ResponsiveRow(
-                                controls=get_admin_tiles()
+            controls=[]
         )
         self.content = ft.Container(
             padding=ft.Padding(20, 20, 20, 20),
@@ -50,10 +50,65 @@ class MainPage(BasePage):
             content=ft.ResponsiveRow(
                 alignment=ft.MainAxisAlignment.CENTER,
                 controls=[
-                    MainMenu(),
-                    ft.Container(
-                        content=self.workspace,
-                        col={"sm": 8, "md": 8, "xl": 8, "xs": 11},
+                    ft.Column(
+                        controls=[
+                            MainMenu(),
+                            ft.Container(
+                                height=100,
+                                bgcolor=ft.colors.AMBER_50
+                            )
+                        ],
+                        col={
+                            "xs": 12,
+                            "sm": 3.8,
+                            "md": 3,
+                            "xl": 3
+                        }
+                    ),
+                    ft.Column(
+                        controls=[
+                            ft.Container(
+                                height=36,
+
+                                content=ft.Row(
+                                    controls=[
+                                        ft.Container(
+                                            content=ft.Text('Sergei Shtro', size=15, weight=ft.FontWeight.BOLD),
+                                            margin=ft.Margin(0, 0, 20, 0),
+                                            padding=ft.Padding(0, 0, 0, 0)
+
+                                        ),
+                                        ft.Icon(
+                                            ft.icons.PERSON_3
+                                        )
+                                    ],
+                                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                                    alignment=ft.MainAxisAlignment.END,
+
+
+                                ),
+                                col={"sm": 8, "md": 10, "xl": 10, "xs": 11},
+                                gradient=ft.LinearGradient(
+                                    begin=ft.alignment.top_left,
+                                    end=ft.Alignment(0.8, 1),
+                                    colors=[
+                                        "0xffac255e",
+                                        "0xffca485c",
+                                        "0xffe16b5c",
+                                        "0xfff39060",
+                                        "0xffffb56b",
+                                        PastelColors.MEDIUM_BROWN,
+                                    ],
+                                    tile_mode=ft.GradientTileMode.MIRROR,
+                                    rotation=math.pi / 3,
+                                ),
+                                border_radius=10,
+                                margin=ft.Margin(10, 0, 0, 0),
+                                bgcolor=ft.colors.BLACK
+                            ),
+                            self.workspace
+                        ],
+                        col={"sm": 8, "md": 8, "xl": 8, "xs": 11}
                     )
                 ]
             )

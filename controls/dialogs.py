@@ -79,7 +79,8 @@ class BaseCreateUpdateDialog(ABC, ft.UserControl):
 
         content = ft.Column(
             width=600,
-            controls=controls
+            controls=controls,
+            scroll=ft.ScrollMode.AUTO
         )
         if id:
             title = ft.Text(f'Update {id}', weight=ft.FontWeight.BOLD)
