@@ -149,6 +149,6 @@ class PydanticDatatable(ft.Container):
         self.page.update()
 
     def show_delete_dialog(self, e):
-        self.page.dialog = self.__class__.dialog(e.control.data, self)
+        self.page.dialog = DatatableDeleteDialog(e.control.data, self)
         self.page.update()
 

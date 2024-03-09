@@ -1,13 +1,25 @@
 from controls.items import NavigationTile
 import flet_core as ft
 
-from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable, GroupsTypesTable, DishesTable
+from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable, GroupsTypesTable, DishesTable, \
+    DishTypesTable
 
 PASS = ft.Container(
-            height=400,
             width=300,
             bgcolor='yellow'
 )
+
+
+def create_tiles_scroll(tiles):
+    return ft.Row(
+        height=430,
+        controls=tiles,
+        wrap=True,
+        spacing=5,
+        run_spacing=10,
+        alignment=ft.MainAxisAlignment.CENTER,
+        scroll=ft.ScrollMode.ALWAYS
+    )
 
 
 def get_admin_tiles():
@@ -31,9 +43,45 @@ def get_admin_tiles():
                     'GROUPS',
                     ft.icons.GROUP,
                     next_control=GroupsTypesTable()
-        )
+        ),
+        NavigationTile(
+            'CONTENT TYPES',
+            ft.icons.DATASET,
+            next_control=PASS
+        ),
+        NavigationTile(
+            'CONTENT TYPES',
+            ft.icons.DATASET,
+            next_control=PASS
+        ),
+        NavigationTile(
+            'CONTENT TYPES',
+            ft.icons.DATASET,
+            next_control=PASS
+        ),
+        NavigationTile(
+            'CONTENT TYPES',
+            ft.icons.DATASET,
+            next_control=PASS
+        ),
+        NavigationTile(
+            'CONTENT TYPES',
+            ft.icons.DATASET,
+            next_control=PASS
+        ),
+        NavigationTile(
+            'CONTENT TYPES',
+            ft.icons.DATASET,
+            next_control=PASS
+        ),
+        NavigationTile(
+            'CONTENT TYPES',
+            ft.icons.DATASET,
+            next_control=PASS
+        ),
+
     ]
-    return admin_tiles
+    return [create_tiles_scroll(admin_tiles)]
 
 
 def get_menu_tiles():
@@ -51,7 +99,7 @@ def get_menu_tiles():
         NavigationTile(
             'DISH TYPES',
             ft.icons.EMOJI_FOOD_BEVERAGE_OUTLINED,
-            next_control=PASS
+            next_control=DishTypesTable()
         )
     ]
     return menu_tiles

@@ -22,11 +22,10 @@ class NavigationTile(ft.Container):
         self.margin = ft.Margin(10, 0, 0, 0)
         self.on_click = self.tile_click
         self.height = 100
-        self.width = 300
         self.border_radius = 10
         self.padding = ft.Padding(10, 10, 10, 0)
         self.bgcolor = 'red'
-        self.col = {"sm": 6, "md": 4, "xl": 2}
+        self.col = {"sm": 8, "md": 8, "xl": 8, "xs": 2}
 
     def tile_click(self, _):
         self.page.current_view.workspace.controls.clear()

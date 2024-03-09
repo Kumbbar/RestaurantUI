@@ -33,7 +33,8 @@ class MainPage(BasePage):
             width=300,
         )
         self.workspace = ft.ResponsiveRow(
-            controls=[]
+            controls=[],
+            col={"sm": 8, "md": 8, "xl": 8, "xs": 11}
         )
         self.content = ft.Container(
             padding=ft.Padding(20, 20, 20, 20),
@@ -74,12 +75,16 @@ class MainPage(BasePage):
                                     controls=[
                                         ft.Container(
                                             content=ft.Text('Sergei Shtro', size=15, weight=ft.FontWeight.BOLD),
-                                            margin=ft.Margin(0, 0, 20, 0),
+                                            margin=ft.Margin(0, 0, 5, 0),
                                             padding=ft.Padding(0, 0, 0, 0)
 
                                         ),
-                                        ft.Icon(
-                                            ft.icons.PERSON_3
+                                        ft.Container(
+                                            ft.Icon(
+                                                ft.icons.PERSON_2
+                                            ),
+                                            margin=ft.Margin(0, 0, 10, 0),
+                                            padding=ft.Padding(0, 0, 0, 0)
                                         )
                                     ],
                                     vertical_alignment=ft.CrossAxisAlignment.CENTER,

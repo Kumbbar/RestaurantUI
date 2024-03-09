@@ -9,7 +9,6 @@ from settings import LOGIN_PAGE_VIEW_URL
 class MainMenu(ft.Container):
     def __init__(self):
         super().__init__()
-        print(self.page, 'dubi')
         self.col = {
                 "xs": 12,
                 "sm": 3.8,
@@ -36,7 +35,7 @@ class MainMenu(ft.Container):
                     ),
                     ft.NavigationRailDestination(
                         label='LOGOUT',
-                        selected_icon=ft.icons.TAG,
+                        selected_icon=ft.icons.LOGOUT,
                         icon=ft.icons.LOGOUT,
                     )
                 ]
