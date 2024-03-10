@@ -111,7 +111,7 @@ class MainPage(BasePage):
                                 margin=ft.Margin(10, 0, 0, 0),
                                 bgcolor=ft.colors.BLACK
                             ),
-                            self.workspace
+                            self.workspace,
                         ],
                         col={"sm": 8, "md": 8, "xl": 8, "xs": 11}
                     )
@@ -119,7 +119,8 @@ class MainPage(BasePage):
             )
         )
 
-
+    def get_user_data(self):
+        pass
 
 
 

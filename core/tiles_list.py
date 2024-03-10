@@ -6,13 +6,14 @@ from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable
 
 PASS = ft.Container(
             width=300,
+            height=200,
             bgcolor='yellow'
 )
 
 
 def create_tiles_scroll(tiles):
     return ft.Row(
-        height=430,
+        height=320,
         controls=tiles,
         wrap=True,
         spacing=5,
@@ -102,4 +103,4 @@ def get_menu_tiles():
             next_control=DishTypesTable()
         )
     ]
-    return menu_tiles
+    return [create_tiles_scroll(menu_tiles)]

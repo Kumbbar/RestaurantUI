@@ -9,7 +9,7 @@ from data_models.dict_model import DictDataModeL
 from styles.buttons import CreateDataTableButton
 
 
-class PydanticDatatable(ft.Container):
+class PydanticDatatable(ft.UserControl):
     visible_columns: List
     foreign_data_template = dict()
     data_model: BaseDataModel
@@ -45,37 +45,49 @@ class PydanticDatatable(ft.Container):
             style=CreateDataTableButton(),
             on_click=self.show_create_dialog
         )
-        self.content = (
-            ft.Container(
-                padding=ft.padding.Padding(0, 0, 0, 0),
-                content=ft.Column(
+        self.content = ft.Container(
+            col={"sm": 8, "md": 8, "xl": 8, "xs": 11}, height=540,
+            padding=ft.padding.Padding(0, 0, 0, 0),
+            content=ft.Column(
 
-                    on_scroll_interval=0,
-                    controls=[
-                        ft.Row(
+                on_scroll_interval=0,
+                controls=[
+                    ft.Row(
 
-                            controls=[
-                                self.create_button,
-                                self.refresh_button,
-                            ],
-                            alignment=ft.MainAxisAlignment.START
-                        ),
-
-                        ft.ListView(
-                            expand=1,
-                            spacing=10,
-                            controls=[
-                                self.datatable
-                            ]
-                        )
-                    ]
-
-                )
+                        controls=[
+                            self.create_button,
+                            self.refresh_button,
+                        ],
+                        alignment=ft.MainAxisAlignment.START
+                    ),
+                    ft.ListView(
+                        expand=1,
+                        spacing=10,
+                        height=100,
+                        controls=[
+                            self.datatable
+                        ]
+                    )
+                ]
             )
         )
 
+    def build(self):
+        return self.content
+
+    def did_mount(self):
+        self.resize()
+
+    def resize(self):
+        if self.page.width / self.page.height > 4/3:
+            self.content.height = self.page.height * 0.8
+        else:
+            self.content.height = self.page.height * 0.4
+        self.content.update()
+
     def refresh_data_click(self, e):
         self.refresh_data()
+        self.resize()
 
     def refresh_data(self):
         self.datatable.rows = self.__get_data()
