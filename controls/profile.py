@@ -8,11 +8,10 @@ from consts.colors import PastelColors
 class SmallProfileContainer(ft.UserControl):
     def __init__(self):
         super().__init__()
-        self.data = {
-            'first_name': 'Unknown',
-            'last_name': 'Unknown',
-        }
-        self.text = ft.Text(f'{self.data['first_name']} {self.data['last_name']}', size=15, weight=ft.FontWeight.BOLD)
+        self.first_name = 'Unknown'
+        self.last_name = 'Unknown'
+
+        self.text = ft.Text(f'{self.first_name} {self.last_name}', size=15, weight=ft.FontWeight.BOLD)
         self.content = ft.Container(
             height=36,
             content=ft.Row(
@@ -57,13 +56,14 @@ class SmallProfileContainer(ft.UserControl):
         return self.content
 
     def get_names(self):
-        self.data['first_name'] = self.page.current_view.current_user.data.first_name
-        self.data['last_name'] = self.page.current_view.current_user.data.last_name
+        self.first_name = self.page.current_view.current_user.data.first_name
+        self.last_name = self.page.current_view.current_user.data.last_name
 
     def set_names(self):
-        self.text.value = f'{self.data['first_name']} {self.data['last_name']}'
+        self.text.value = f'{self.first_name} {self.last_name}'
 
     def did_mount(self):
         self.get_names()
-        self.set_names()
+        if self.first_name != 'Unknown' and self.last_name != 'Unknown':
+            self.set_names()
         self.update()
