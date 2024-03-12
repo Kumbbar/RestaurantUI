@@ -1,8 +1,8 @@
 from controls.datatables import PydanticDatatable
 from core.data_models_list import PermissionsDataModel, UsersDataModel, ContentTypesDataModel, GroupsDataModel, \
-    DishesDataModel, DishTypesDataModel
+    DishesDataModel, DishTypesDataModel, RestaurantDataModel
 from core.dialogs_list import PermissionsCreateUpdateDialog, UsersCreateUpdateDialog, ContentTypesCreateUpdateDialog, \
-    GroupsCreateUpdateDialog, DishesCreateUpdateDialog, DishTypesCreateUpdateDialog
+    GroupsCreateUpdateDialog, DishesCreateUpdateDialog, DishTypesCreateUpdateDialog, RestaurantCreateUpdateDialog
 from core.dict_data_models import ContentTypeDictDataModeL, DishTypeDictDataModeL
 
 
@@ -65,3 +65,13 @@ class DishTypesTable(PydanticDatatable):
     url = '/food/dish_types/'
     dialog = DishTypesCreateUpdateDialog
     data_model = DishTypesDataModel
+
+
+class RestaurantTable(PydanticDatatable):
+    visible_columns = [
+        'id',
+        'name'
+    ]
+    url = '/food/restaurants/'
+    dialog = RestaurantCreateUpdateDialog
+    data_model = RestaurantDataModel

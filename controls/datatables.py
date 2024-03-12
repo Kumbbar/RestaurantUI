@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List
 
 import flet as ft
 
@@ -46,8 +46,9 @@ class PydanticDatatable(ft.UserControl):
             on_click=self.show_create_dialog
         )
         self.content = ft.Container(
-            col={"sm": 8, "md": 8, "xl": 8, "xs": 11}, height=540,
+            col={"sm": 8, "md": 8, "xl": 8, "xs": 11}, height=0,
             padding=ft.padding.Padding(0, 0, 0, 0),
+            animate=ft.animation.Animation(300, ft.AnimationCurve.EASE_IN),
             content=ft.Column(
 
                 on_scroll_interval=0,
@@ -76,6 +77,7 @@ class PydanticDatatable(ft.UserControl):
         return self.content
 
     def did_mount(self):
+        self.refresh_data()
         self.resize()
 
     def resize(self):

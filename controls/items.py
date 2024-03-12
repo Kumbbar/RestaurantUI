@@ -1,7 +1,10 @@
+import copy
+import time
+
 import flet_core as ft
 
 
-class NavigationTile(ft.Container):
+class NavigationTile(ft.UserControl):
     title: str = 'UNSET'
     icon: str = ft.icons.ERROR
     open: str = ft.icons.ERROR
@@ -9,27 +12,47 @@ class NavigationTile(ft.Container):
     def __init__(self, title: str, icon: str, next_control=None):
         super().__init__()
         self.__next_control = next_control
-        self.content = ft.Column(
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            controls=[
-                ft.Text(
-                    title,
-                    text_align=ft.TextAlign.CENTER
-                ),
-                ft.Icon(name=icon)
-            ]
+        self.content = ft.Container(
+            height=0,
+            col={"sm": 0, "md": 0, "xl": 0, "xs": 0},
+            animate=ft.animation.Animation(500, ft.AnimationCurve.BOUNCE_OUT),
+            margin=ft.Margin(10, 0, 0, 0),
+            on_click=self.tile_click,
+            border_radius=10,
+            padding=ft.Padding(10, 10, 10, 0),
+            bgcolor='red',
+            content=ft.Column(
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                controls=[
+                    ft.Text(
+                        title,
+                        text_align=ft.TextAlign.CENTER
+                    ),
+                    ft.Icon(name=icon)
+                ]
+            )
+
         )
-        self.margin = ft.Margin(10, 0, 0, 0)
-        self.on_click = self.tile_click
-        self.height = 100
-        self.border_radius = 10
-        self.padding = ft.Padding(10, 10, 10, 0)
-        self.bgcolor = 'red'
-        self.col = {"sm": 8, "md": 8, "xl": 8, "xs": 2}
 
     def tile_click(self, _):
         self.page.current_view.workspace.controls.clear()
         self.page.current_view.workspace.controls.append(self.__next_control)
         self.page.update()
 
+    def build(self):
+        return self.content
 
+    def did_mount(self):
+        time.sleep(0.03)
+        self.content.height = 100
+        self.content.col = {"sm": 8, "md": 8, "xl": 8, "xs": 2},
+        self.content.update()
+        self.update()
+        print()
+
+
+class CustomWidthNavigationTile(NavigationTile):
+    def __init__(self, title: str, icon: str, next_control=None, width=None):
+        super().__init__(title, icon, next_control)
+        if width:
+            self.content.width = width

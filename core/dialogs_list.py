@@ -82,3 +82,12 @@ class DishTypesCreateUpdateDialog(BaseCreateUpdateDialog):
         return {
             'name': ft.TextField(label='name')
         }
+
+
+class RestaurantCreateUpdateDialog(BaseCreateUpdateDialog):
+    url = '/food/restaurants/'
+
+    def get_fields(self):
+        return {
+            'name': ft.TextField(label='name')
+        }

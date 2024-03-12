@@ -24,7 +24,7 @@ class BaseDataModel(object):
             self.__class__.url
         )
         if not response.ok:
-            raise ConnectionError
+            raise ConnectionError('Server unavailable')
         data = self.__validate_response(response)
         return data
 

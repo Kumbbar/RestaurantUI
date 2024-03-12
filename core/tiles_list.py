@@ -1,8 +1,10 @@
-from controls.items import NavigationTile
+import copy
+
+from controls.items import NavigationTile, CustomWidthNavigationTile
 import flet_core as ft
 
 from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable, GroupsTypesTable, DishesTable, \
-    DishTypesTable
+    DishTypesTable, RestaurantTable
 
 PASS = ft.Container(
             width=300,
@@ -87,10 +89,11 @@ def get_admin_tiles():
 
 def get_menu_tiles():
     menu_tiles = [
-        NavigationTile(
+        CustomWidthNavigationTile(
             'MENU',
             ft.icons.MENU_BOOK,
-            next_control=PASS
+            next_control=RestaurantTable(),
+            width=200
         ),
         NavigationTile(
             'DISHES',
@@ -101,6 +104,11 @@ def get_menu_tiles():
             'DISH TYPES',
             ft.icons.EMOJI_FOOD_BEVERAGE_OUTLINED,
             next_control=DishTypesTable()
-        )
+        ),
+        NavigationTile(
+            'GET MENU TEMPLATE',
+            ft.icons.GET_APP,
+            next_control=PASS
+        ),
     ]
     return [create_tiles_scroll(menu_tiles)]
