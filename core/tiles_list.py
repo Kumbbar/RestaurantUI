@@ -89,11 +89,10 @@ def get_admin_tiles():
 
 def get_menu_tiles():
     menu_tiles = [
-        CustomWidthNavigationTile(
-            'MENU',
-            ft.icons.MENU_BOOK,
+        NavigationTile(
+            'RESTAURANTS',
+            ft.icons.RESTAURANT,
             next_control=RestaurantTable(),
-            width=200
         ),
         NavigationTile(
             'DISHES',

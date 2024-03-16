@@ -1,11 +1,12 @@
 from flet_core import NumbersOnlyInputFilter
 
+from controls.datepickers import InputDatePicker
 from controls.dialogs import BaseCreateUpdateDialog
 from controls.dropdown import CustomDropDown
 import flet_core as ft
 
 from controls.file_pickers import FilePickerImage
-from core.dropdowns_list import ContentTypeDropDown, DishTypeDropDown
+from core.dropdowns_list import ContentTypeDropDown, DishTypeDropDown, UserDropDown
 
 
 class UsersCreateUpdateDialog(BaseCreateUpdateDialog):
@@ -89,5 +90,9 @@ class RestaurantCreateUpdateDialog(BaseCreateUpdateDialog):
 
     def get_fields(self):
         return {
-            'name': ft.TextField(label='name')
+            'name': ft.TextField(label='name'),
+            'boss': UserDropDown('boss'),
+            'latitude': ft.TextField(label='latitude'),
+            'longitude': ft.TextField(label='longitude'),
+            'date_of_open': InputDatePicker('date of open')
         }

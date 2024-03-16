@@ -1,4 +1,5 @@
 import math
+import time
 
 import flet as ft
 from consts.colors import PastelColors
@@ -79,7 +80,12 @@ class MainPage(BasePage):
         )
 
     def get_user_data(self):
-        current_user = UserProfileDataModel(self.page)
+        current_user = None
+        while not current_user:
+            try:
+                current_user = UserProfileDataModel(self.page)
+            except ConnectionError:
+                time.sleep(2)
         return current_user
 
 

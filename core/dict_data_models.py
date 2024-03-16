@@ -1,4 +1,4 @@
-from core.data_models_list import ContentTypesDataModel, DishTypesDataModel
+from core.data_models_list import ContentTypesDataModel, DishTypesDataModel, UsersDataModel
 from data_models.dict_model import DictDataModeL
 
 
