@@ -92,7 +92,7 @@ class RestaurantCreateUpdateDialog(BaseCreateUpdateDialog):
         return {
             'name': ft.TextField(label='name'),
             'boss': UserDropDown('boss'),
-            'latitude': ft.TextField(label='latitude'),
-            'longitude': ft.TextField(label='longitude'),
+            'latitude': ft.TextField(label='latitude', keyboard_type=ft.KeyboardType.NUMBER),
+            'longitude': ft.TextField(label='longitude', keyboard_type=ft.KeyboardType.NUMBER),
             'date_of_open': InputDatePicker('date of open')
         }

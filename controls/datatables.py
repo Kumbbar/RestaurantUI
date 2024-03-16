@@ -34,16 +34,25 @@ class PydanticDatatable(ft.UserControl):
             column_spacing=10,
         )
         self.foreign_data = dict()
+        self.create_button = ft.OutlinedButton(
+            'CREATE',
+            style=CreateDataTableButton(),
+            on_click=self.show_create_dialog,
+            col={"xs": 5, "sm": 4, "lg": 3, "xl": 2}
+        )
+        self.search_field = ft.TextField(
+            label='SEARCH',
+            height=30,
+            text_size=14,
+            content_padding=ft.Padding(10, 0, 0, 0),
+            col={"xs": 5, "sm": 5, "lg": 4, "xl": 4}
+        )
         self.refresh_button = ft.IconButton(
             icon=ft.icons.REFRESH_ROUNDED,
             on_click=self.refresh_data_click,
             icon_color=ft.colors.BLACK,
-            tooltip='refresh'
-        )
-        self.create_button = ft.OutlinedButton(
-            'CREATE',
-            style=CreateDataTableButton(),
-            on_click=self.show_create_dialog
+            tooltip='refresh',
+            col={"xs": 2, "sm": 2, "lg": 1, "xl": 1}
         )
         self.content = ft.Container(
             col={"sm": 8, "md": 8, "xl": 8, "xs": 11}, height=0,
@@ -53,12 +62,13 @@ class PydanticDatatable(ft.UserControl):
 
                 on_scroll_interval=0,
                 controls=[
-                    ft.Row(
-
+                    ft.ResponsiveRow(
                         controls=[
                             self.create_button,
+                            self.search_field,
                             self.refresh_button,
                         ],
+
                         alignment=ft.MainAxisAlignment.START
                     ),
                     ft.ListView(
@@ -108,10 +118,16 @@ class PydanticDatatable(ft.UserControl):
         return columns
 
     def __get_data(self):
-        self.data = self.__class__.data_model(self.page)
+        request_data = dict(params=self.get_params_for_request())
+        self.data = self.__class__.data_model(self.page, **request_data)
         self.__get_foreign_data()
         rows = self.__convert_to_datatable_rows()
         return rows
+
+    def get_params_for_request(self):
+        result = dict()
+        result['search'] = self.search_field.value
+        return result
 
     def __get_foreign_data(self):
         for key, value in self.__class__.foreign_data_template.items():
@@ -127,7 +143,7 @@ class PydanticDatatable(ft.UserControl):
                         ft.DataCell(
                             CellText(self.foreign_data[key].foreign_data[getattr(row, key)]),
                             data=row.id,
-                            on_double_tap=self.show_update_dialog
+                            on_double_tap=self.obj_event
                         )
                     )
                 else:
@@ -135,7 +151,7 @@ class PydanticDatatable(ft.UserControl):
                         ft.DataCell(
                             CellText(getattr(row, key)),
                             data=row.id,
-                            on_double_tap=self.show_update_dialog
+                            on_double_tap=self.obj_event
                         )
                     )
             data_row.cells.append(
@@ -157,9 +173,9 @@ class PydanticDatatable(ft.UserControl):
         self.page.dialog = create_dialog
         self.page.update()
 
-    def show_update_dialog(self, e):
-        create_dialog = self.__class__.dialog(e.control.data)
-        self.page.dialog = create_dialog
+    def obj_event(self, e):
+        update_dialog = self.__class__.dialog(e.control.data)
+        self.page.dialog = update_dialog
         self.page.update()
 
     def show_delete_dialog(self, e):

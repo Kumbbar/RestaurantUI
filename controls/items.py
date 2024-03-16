@@ -46,9 +46,7 @@ class NavigationTile(ft.UserControl):
         time.sleep(0.03)
         self.content.height = 100
         self.content.col = {"sm": 8, "md": 8, "xl": 8, "xs": 2},
-        self.content.update()
         self.update()
-        print()
 
 
 class CustomWidthNavigationTile(NavigationTile):
