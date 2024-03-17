@@ -14,6 +14,11 @@ class PermissionsDataModel(BaseDataModel):
     pydantic_model = PermissionResponse
 
 
+class UserPermissionsDataModel(BaseDataModel):
+    url = '/admin/user_permissions/'
+    pydantic_model = PermissionResponse
+
+
 class UsersDataModel(BaseDataModel):
     url = '/admin/users/'
     pydantic_model = UserResponse

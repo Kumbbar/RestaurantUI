@@ -1,7 +1,17 @@
-from controls.datatables import ManySelectionsDatatable
-from core.data_models_list import PermissionsDataModel
+from controls.datatables import ManySelectionsMixinDatatable, BaseDatatable, SearchMixinDatatable
+from core.data_models_list import PermissionsDataModel, UserPermissionsDataModel
 
 
-class PermissionsManySelectionsTable(ManySelectionsDatatable):
+class PermissionsManySelectionsTable(ManySelectionsMixinDatatable, SearchMixinDatatable, BaseDatatable):
     visible_columns = ['id', 'codename']
     data_model = PermissionsDataModel
+
+    def get_params_for_request(self):
+        result = super().get_params_for_request()
+        result['page_size'] = 100000
+        return result
+
+
+class UserPermissionsManySelectionsTable(ManySelectionsMixinDatatable, SearchMixinDatatable, BaseDatatable):
+    visible_columns = ['id', 'codename']
+    data_model = UserPermissionsDataModel

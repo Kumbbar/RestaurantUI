@@ -3,7 +3,7 @@ import copy
 from controls.items import NavigationTile
 import flet_core as ft
 
-from controls.many_to_many import Test
+from controls.many_to_many import ManyToManyDataControl
 from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable, GroupsTypesTable, DishesTable, \
     DishTypesTable, RestaurantTable
 
@@ -81,7 +81,7 @@ def get_admin_tiles():
         NavigationTile(
             'CONTENT TYPES',
             ft.icons.DATASET,
-            next_control=Test()
+            next_control=ManyToManyDataControl()
         ),
 
     ]

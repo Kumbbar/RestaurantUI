@@ -12,8 +12,9 @@ class BaseDatatable(ft.UserControl):
     visible_columns: List
     data_model: BaseDataModel
 
-    def __init__(self):
+    def __init__(self, extra_url=''):
         super().__init__()
+        self.extra_url = extra_url
         self.datatable = ft.DataTable(
             col={"sm": 10, "md": 10, "xl": 10, "xs": 10},
             bgcolor="white",
@@ -29,14 +30,28 @@ class BaseDatatable(ft.UserControl):
             divider_thickness=0,
             column_spacing=10,
         )
-        self.content = ft.Container(
+        self.header_navigation = []
+        self.content = self.create_content()
+
+    def build(self):
+        return self.content
+
+    def did_mount(self):
+        self.refresh_data()
+        self.resize()
+
+    def create_content(self):
+        return ft.Container(
             col={"sm": 8, "md": 8, "xl": 8, "xs": 11}, height=0,
             padding=ft.padding.Padding(0, 0, 0, 0),
             animate=ft.animation.Animation(300, ft.AnimationCurve.EASE_IN),
             content=ft.Column(
-
                 on_scroll_interval=0,
                 controls=[
+                    ft.ResponsiveRow(
+                        controls=self.header_navigation,
+                        alignment=ft.MainAxisAlignment.START
+                    ),
                     ft.ListView(
                         expand=1,
                         spacing=10,
@@ -48,13 +63,6 @@ class BaseDatatable(ft.UserControl):
                 ]
             )
         )
-
-    def build(self):
-        return self.content
-
-    def did_mount(self):
-        self.refresh_data()
-        self.resize()
 
     def refresh_data(self):
         self.datatable.rows = self.get_data()
@@ -76,18 +84,22 @@ class BaseDatatable(ft.UserControl):
         ]
         return columns
 
+    def get_params_for_request(self):
+        return dict()
+
     def get_data(self):
-        self.data = self.__class__.data_model(self.page)
+        request_data = dict(params=self.get_params_for_request())
+        self.data = self.__class__.data_model(self.page, self.extra_url, **request_data)
         rows = self.convert_to_datatable_rows()
         return rows
 
-    def get_row_template(self):
-        return ft.DataRow(cells=[])
+    def get_row_template(self, row):
+        return ft.DataRow(cells=[], data=row.id)
 
     def convert_to_datatable_rows(self):
         result_rows = []
         for row in self.data.result_list:
-            data_row = self.get_row_template()
+            data_row = self.get_row_template(row)
             for key in self.__class__.visible_columns:
                 data_row.cells.append(
                     ft.DataCell(
@@ -99,28 +111,32 @@ class BaseDatatable(ft.UserControl):
         return result_rows
 
 
-class PydanticDatatable(BaseDatatable):
-    visible_columns: List
-    foreign_data_template = dict()
-    data_model: BaseDataModel
-    dialog: BaseCreateUpdateDialog
-    url: str
-
+class ManySelectionsMixinDatatable(object):
     def __init__(self):
         super().__init__()
-        self.foreign_data = dict()
-        self.create_button = ft.OutlinedButton(
-            'CREATE',
-            style=CreateDataTableButton(),
-            on_click=self.show_create_dialog,
-            col={"xs": 5, "sm": 4, "lg": 3, "xl": 2}
-        )
+        self.datatable.show_checkbox_column = True
+
+    def get_row_template(self, row):
+        return ft.DataRow(cells=[], on_select_changed=self.change_row_select, data=row.id)
+
+    def change_row_select(self, e):
+        e.control.selected = not e.control.selected
+        e.control.update()
+
+    @property
+    def selected_ids(self):
+        return [row.data for row in self.datatable.rows if row.selected]
+
+
+class SearchMixinDatatable(object):
+    def __init__(self):
+        super().__init__()
         self.search_field = ft.TextField(
             label='SEARCH',
             height=30,
             text_size=14,
             content_padding=ft.Padding(10, 0, 0, 0),
-            col={"xs": 5, "sm": 5, "lg": 4, "xl": 4}
+            col={"xs": 7, "sm": 7, "lg": 4, "xl": 4}
         )
         self.refresh_button = ft.IconButton(
             icon=ft.icons.REFRESH_ROUNDED,
@@ -129,34 +145,36 @@ class PydanticDatatable(BaseDatatable):
             tooltip='refresh',
             col={"xs": 2, "sm": 2, "lg": 1, "xl": 1}
         )
-        self.content = ft.Container(
-            col={"sm": 8, "md": 8, "xl": 8, "xs": 11}, height=0,
-            padding=ft.padding.Padding(0, 0, 0, 0),
-            animate=ft.animation.Animation(300, ft.AnimationCurve.EASE_IN),
-            content=ft.Column(
+        self.header_navigation.extend([self.search_field, self.refresh_button])
+        self.create_content()
 
-                on_scroll_interval=0,
-                controls=[
-                    ft.ResponsiveRow(
-                        controls=[
-                            self.create_button,
-                            self.search_field,
-                            self.refresh_button,
-                        ],
+    def get_params_for_request(self):
+        result = dict()
+        result['search'] = self.search_field.value
+        return result
 
-                        alignment=ft.MainAxisAlignment.START
-                    ),
-                    ft.ListView(
-                        expand=1,
-                        spacing=10,
-                        height=100,
-                        controls=[
-                            self.datatable
-                        ]
-                    )
-                ]
-            )
+    def refresh_data_click(self, e):
+        self.refresh_data()
+        self.resize()
+
+
+class PydanticDatatable(SearchMixinDatatable, BaseDatatable):
+    foreign_data_template = dict()
+    dialog: BaseCreateUpdateDialog
+    url: str
+
+    def __init__(self):
+        super().__init__()
+        print(self.__class__.__mro__, 'ykras')
+        self.foreign_data = dict()
+        self.create_button = ft.OutlinedButton(
+            'CREATE',
+            style=CreateDataTableButton(),
+            on_click=self.show_create_dialog,
+            col={"xs": 5, "sm": 4, "lg": 3, "xl": 2}
         )
+        self.header_navigation.insert(0, self.create_button)
+        self.content = self.create_content()
 
     def refresh_data(self):
         self.datatable.rows = self.get_data()
@@ -181,10 +199,6 @@ class PydanticDatatable(BaseDatatable):
         rows = self.convert_to_datatable_rows()
         return rows
 
-    def refresh_data_click(self, e):
-        self.refresh_data()
-        self.resize()
-
     def get_params_for_request(self):
         result = dict()
         result['search'] = self.search_field.value
@@ -197,7 +211,8 @@ class PydanticDatatable(BaseDatatable):
     def convert_to_datatable_rows(self):
         result_rows = []
         for row in self.data.result_list:
-            data_row = self.get_row_template()
+            data_row = self.get_row_template(row)
+
             for key in self.__class__.visible_columns:
                 if key in self.foreign_data.keys():
                     data_row.cells.append(
@@ -247,16 +262,3 @@ class PydanticDatatable(BaseDatatable):
 def test(e):
     e.control.selected = not e.control.selected
     e.control.update()
-
-
-class ManySelectionsDatatable(BaseDatatable):
-    def __init__(self):
-        super().__init__()
-        self.datatable.show_checkbox_column = True
-
-    def get_row_template(self):
-        return ft.DataRow(cells=[], on_select_changed=self.change_row_select)
-
-    def change_row_select(self, e):
-        e.control.selected = not e.control.selected
-        e.control.update()

@@ -5,6 +5,7 @@ from controls.dialogs import BaseCreateUpdateDialog
 import flet_core as ft
 
 from controls.file_pickers import FilePickerImage
+from controls.many_to_many import ManyToManyDataControl
 
 from core.dropdowns_list import ContentTypeDropDown, DishTypeDropDown, UserDropDown
 
@@ -21,6 +22,11 @@ class UsersCreateUpdateDialog(BaseCreateUpdateDialog):
             'is_superuser': ft.Checkbox(label='is superuser'),
             'is_active': ft.Checkbox(label='is active'),
             'email': ft.TextField(label='email', keyboard_type=ft.KeyboardType.EMAIL),
+        }
+
+    def get_extra_controls(self):
+        return {
+            'permissions': ManyToManyDataControl()
         }
 
 

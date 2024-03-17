@@ -70,14 +70,23 @@ class BaseCreateUpdateDialog(ABC, ft.UserControl):
     def get_fields(self) -> dict[str, TextField | CustomDropDown]:
         pass
 
+    def get_extra_controls(self):
+        return {}
+
     def __init__(self, id=''):
         super().__init__()
         self.id = id
 
         self.fields = self.get_fields()
+        self.extra_controls = self.get_extra_controls()
+
         controls = list(self.fields.values())
+        extra_controls = list(self.extra_controls.values())
+        controls.extend(
+            extra_controls
+        )
         content = ft.Column(
-            width=600,
+            width=900,
             controls=controls,
             scroll=ft.ScrollMode.AUTO
         )
@@ -106,7 +115,14 @@ class BaseCreateUpdateDialog(ABC, ft.UserControl):
         if self.id:
             json_data = self.get_data()
             self.set_fields_data(json_data)
+
+            self.set_extra_controls()
             self.update()
+
+    def set_extra_controls(self):
+        for key in self.extra_controls.keys():
+            self.extra_controls[key].value = self.id
+            self.extra_controls[key].update()
 
     def set_fields_data(self, data):
         for key in self.fields.keys():
