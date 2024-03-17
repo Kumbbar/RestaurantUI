@@ -76,7 +76,6 @@ class BaseCreateUpdateDialog(ABC, ft.UserControl):
 
         self.fields = self.get_fields()
         controls = list(self.fields.values())
-
         content = ft.Column(
             width=600,
             controls=controls,

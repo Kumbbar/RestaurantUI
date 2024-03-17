@@ -2,10 +2,10 @@ from flet_core import NumbersOnlyInputFilter
 
 from controls.datepickers import InputDatePicker
 from controls.dialogs import BaseCreateUpdateDialog
-from controls.dropdown import CustomDropDown
 import flet_core as ft
 
 from controls.file_pickers import FilePickerImage
+
 from core.dropdowns_list import ContentTypeDropDown, DishTypeDropDown, UserDropDown
 
 
@@ -20,7 +20,7 @@ class UsersCreateUpdateDialog(BaseCreateUpdateDialog):
             'is_staff': ft.Checkbox(label='is staff'),
             'is_superuser': ft.Checkbox(label='is superuser'),
             'is_active': ft.Checkbox(label='is active'),
-            'email': ft.TextField(label='email', keyboard_type=ft.KeyboardType.EMAIL)
+            'email': ft.TextField(label='email', keyboard_type=ft.KeyboardType.EMAIL),
         }
 
 

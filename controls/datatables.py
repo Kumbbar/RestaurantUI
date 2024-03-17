@@ -5,16 +5,12 @@ import flet as ft
 from controls.dialogs import DatatableDeleteDialog, BaseCreateUpdateDialog
 from controls.text import CellText
 from data_models import BaseDataModel
-from data_models.dict_model import DictDataModeL
 from styles.buttons import CreateDataTableButton
 
 
-class PydanticDatatable(ft.UserControl):
+class BaseDatatable(ft.UserControl):
     visible_columns: List
-    foreign_data_template = dict()
     data_model: BaseDataModel
-    dialog: BaseCreateUpdateDialog
-    url: str
 
     def __init__(self):
         super().__init__()
@@ -33,6 +29,85 @@ class PydanticDatatable(ft.UserControl):
             divider_thickness=0,
             column_spacing=10,
         )
+        self.content = ft.Container(
+            col={"sm": 8, "md": 8, "xl": 8, "xs": 11}, height=0,
+            padding=ft.padding.Padding(0, 0, 0, 0),
+            animate=ft.animation.Animation(300, ft.AnimationCurve.EASE_IN),
+            content=ft.Column(
+
+                on_scroll_interval=0,
+                controls=[
+                    ft.ListView(
+                        expand=1,
+                        spacing=10,
+                        height=100,
+                        controls=[
+                            self.datatable
+                        ]
+                    )
+                ]
+            )
+        )
+
+    def build(self):
+        return self.content
+
+    def did_mount(self):
+        self.refresh_data()
+        self.resize()
+
+    def refresh_data(self):
+        self.datatable.rows = self.get_data()
+        self.datatable.columns = self.get_columns()
+        self.datatable.update()
+
+    def resize(self):
+        if self.page.width / self.page.height > 4/3:
+            self.content.height = self.page.height * 0.8
+        else:
+            self.content.height = self.page.height * 0.4
+        self.content.update()
+
+    def get_columns(self):
+        columns = [
+            ft.DataColumn(
+                CellText(key)
+            ) for key in self.__class__.visible_columns
+        ]
+        return columns
+
+    def get_data(self):
+        self.data = self.__class__.data_model(self.page)
+        rows = self.convert_to_datatable_rows()
+        return rows
+
+    def get_row_template(self):
+        return ft.DataRow(cells=[])
+
+    def convert_to_datatable_rows(self):
+        result_rows = []
+        for row in self.data.result_list:
+            data_row = self.get_row_template()
+            for key in self.__class__.visible_columns:
+                data_row.cells.append(
+                    ft.DataCell(
+                        CellText(getattr(row, key)),
+                        data=row.id,
+                    )
+                )
+            result_rows.append(data_row)
+        return result_rows
+
+
+class PydanticDatatable(BaseDatatable):
+    visible_columns: List
+    foreign_data_template = dict()
+    data_model: BaseDataModel
+    dialog: BaseCreateUpdateDialog
+    url: str
+
+    def __init__(self):
+        super().__init__()
         self.foreign_data = dict()
         self.create_button = ft.OutlinedButton(
             'CREATE',
@@ -83,30 +158,12 @@ class PydanticDatatable(ft.UserControl):
             )
         )
 
-    def build(self):
-        return self.content
-
-    def did_mount(self):
-        self.refresh_data()
-        self.resize()
-
-    def resize(self):
-        if self.page.width / self.page.height > 4/3:
-            self.content.height = self.page.height * 0.8
-        else:
-            self.content.height = self.page.height * 0.4
-        self.content.update()
-
-    def refresh_data_click(self, e):
-        self.refresh_data()
-        self.resize()
-
     def refresh_data(self):
-        self.datatable.rows = self.__get_data()
-        self.datatable.columns = self.__get_columns()
+        self.datatable.rows = self.get_data()
+        self.datatable.columns = self.get_columns()
         self.datatable.update()
 
-    def __get_columns(self):
+    def get_columns(self):
         columns = [
             ft.DataColumn(
                 CellText(key)
@@ -117,12 +174,16 @@ class PydanticDatatable(ft.UserControl):
         )
         return columns
 
-    def __get_data(self):
+    def get_data(self):
         request_data = dict(params=self.get_params_for_request())
         self.data = self.__class__.data_model(self.page, **request_data)
         self.__get_foreign_data()
-        rows = self.__convert_to_datatable_rows()
+        rows = self.convert_to_datatable_rows()
         return rows
+
+    def refresh_data_click(self, e):
+        self.refresh_data()
+        self.resize()
 
     def get_params_for_request(self):
         result = dict()
@@ -133,10 +194,10 @@ class PydanticDatatable(ft.UserControl):
         for key, value in self.__class__.foreign_data_template.items():
             self.foreign_data[key] = value(self.page)
 
-    def __convert_to_datatable_rows(self):
+    def convert_to_datatable_rows(self):
         result_rows = []
         for row in self.data.result_list:
-            data_row = ft.DataRow(cells=[])
+            data_row = self.get_row_template()
             for key in self.__class__.visible_columns:
                 if key in self.foreign_data.keys():
                     data_row.cells.append(
@@ -182,3 +243,20 @@ class PydanticDatatable(ft.UserControl):
         self.page.dialog = DatatableDeleteDialog(e.control.data, self)
         self.page.update()
 
+
+def test(e):
+    e.control.selected = not e.control.selected
+    e.control.update()
+
+
+class ManySelectionsDatatable(BaseDatatable):
+    def __init__(self):
+        super().__init__()
+        self.datatable.show_checkbox_column = True
+
+    def get_row_template(self):
+        return ft.DataRow(cells=[], on_select_changed=self.change_row_select)
+
+    def change_row_select(self, e):
+        e.control.selected = not e.control.selected
+        e.control.update()
