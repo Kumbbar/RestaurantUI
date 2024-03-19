@@ -12,9 +12,10 @@ class BaseDatatable(ft.UserControl):
     visible_columns: List
     data_model: BaseDataModel
 
-    def __init__(self, extra_url=''):
+    def __init__(self, extra_url='', autoload=True):
         super().__init__()
         self.extra_url = extra_url
+        self.autoload = autoload
         self.datatable = ft.DataTable(
             col={"sm": 10, "md": 10, "xl": 10, "xs": 10},
             bgcolor="white",
@@ -37,7 +38,8 @@ class BaseDatatable(ft.UserControl):
         return self.content
 
     def did_mount(self):
-        self.refresh_data()
+        if self.autoload:
+            self.refresh_data()
         self.resize()
 
     def create_content(self):
@@ -100,6 +102,8 @@ class BaseDatatable(ft.UserControl):
         result_rows = []
         for row in self.data.result_list:
             data_row = self.get_row_template(row)
+            if not self.row_filter(data_row):
+                continue
             for key in self.__class__.visible_columns:
                 data_row.cells.append(
                     ft.DataCell(
@@ -110,10 +114,13 @@ class BaseDatatable(ft.UserControl):
             result_rows.append(data_row)
         return result_rows
 
+    def row_filter(self, row) -> bool:
+        return True
+
 
 class ManySelectionsMixinDatatable(object):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.datatable.show_checkbox_column = True
 
     def get_row_template(self, row):
@@ -127,10 +134,25 @@ class ManySelectionsMixinDatatable(object):
     def selected_ids(self):
         return [row.data for row in self.datatable.rows if row.selected]
 
+    @property
+    def all_ids(self):
+        return [row.data for row in self.datatable.rows]
+
+
+class ExcludeIdsMixinDatatable(object):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.exclude_ids = []
+
+    def row_filter(self, row) -> bool:
+        if row.data in self.exclude_ids:
+            return False
+        return True
+
 
 class SearchMixinDatatable(object):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.search_field = ft.TextField(
             label='SEARCH',
             height=30,

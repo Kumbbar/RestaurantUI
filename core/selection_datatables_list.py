@@ -1,8 +1,10 @@
-from controls.datatables import ManySelectionsMixinDatatable, BaseDatatable, SearchMixinDatatable
+from controls.datatables import (ManySelectionsMixinDatatable, BaseDatatable, SearchMixinDatatable,
+                                 ExcludeIdsMixinDatatable)
 from core.data_models_list import PermissionsDataModel, UserPermissionsDataModel
 
 
-class PermissionsManySelectionsTable(ManySelectionsMixinDatatable, SearchMixinDatatable, BaseDatatable):
+class PermissionsManySelectionsTable(ManySelectionsMixinDatatable, ExcludeIdsMixinDatatable,
+                                     SearchMixinDatatable, BaseDatatable):
     visible_columns = ['id', 'codename']
     data_model = PermissionsDataModel
 
@@ -15,3 +17,4 @@ class PermissionsManySelectionsTable(ManySelectionsMixinDatatable, SearchMixinDa
 class UserPermissionsManySelectionsTable(ManySelectionsMixinDatatable, SearchMixinDatatable, BaseDatatable):
     visible_columns = ['id', 'codename']
     data_model = UserPermissionsDataModel
+

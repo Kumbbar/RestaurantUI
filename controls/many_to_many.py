@@ -12,9 +12,8 @@ class ManyToManyDataControl(ft.UserControl):
     def __init__(self):
         super().__init__()
         self.value = None
-
+        self.current_obj_data = UserPermissionsManySelectionsTable(autoload=False)
         self.all_data = PermissionsManySelectionsTable()
-        self.current_obj_data = UserPermissionsManySelectionsTable()
         self.content = ft.ResponsiveRow(
             controls=[
                 ft.Text('PERMISSIONS', col=12, weight=ft.FontWeight.BOLD, size=16),
@@ -50,7 +49,7 @@ class ManyToManyDataControl(ft.UserControl):
             **request_data
         )
         if response.ok:
-            self.current_obj_data.refresh_data()
+            self.refresh_tables()
 
     def add_obj_relation(self, _):
         params = dict(
@@ -63,7 +62,7 @@ class ManyToManyDataControl(ft.UserControl):
             **request_data
         )
         if response.ok:
-            self.current_obj_data.refresh_data()
+            self.refresh_tables()
 
     def build(self):
         return self.content
@@ -71,4 +70,11 @@ class ManyToManyDataControl(ft.UserControl):
     def update(self):
         self.current_obj_data.extra_url = self.value
         self.current_obj_data.refresh_data()
+        self.all_data.exclude_ids = self.current_obj_data.all_ids
         super().update()
+
+    def refresh_tables(self):
+        self.current_obj_data.refresh_data()
+        self.all_data.exclude_ids = self.current_obj_data.all_ids
+        self.all_data.refresh_data()
+
