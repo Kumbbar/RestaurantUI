@@ -5,6 +5,12 @@ from core.selection_datatables_list import PermissionsManySelectionsTable, BaseD
 from services.requests import RequestMethod
 
 
+def get_param_ids(ids):
+    return dict(
+        ids=','.join(map(str, ids))
+    )
+
+
 class ManyToManyDataControl(ft.UserControl):
     data_table: BaseDatatable
     url: str = '/admin/user_permissions/'
@@ -39,9 +45,7 @@ class ManyToManyDataControl(ft.UserControl):
         )
 
     def delete_obj_relation(self, _):
-        params = dict(
-            ids=','.join(map(str, self.current_obj_data.selected_ids))
-        )
+        params = get_param_ids(self.current_obj_data.selected_ids)
         request_data = dict(params=params)
         response = self.page.current_view.auth_service.send_closed_request(
             RequestMethod.DELETE,
@@ -52,9 +56,7 @@ class ManyToManyDataControl(ft.UserControl):
             self.refresh_tables()
 
     def add_obj_relation(self, _):
-        params = dict(
-            ids=','.join(map(str, self.all_data.selected_ids))
-        )
+        params = get_param_ids(self.all_data.selected_ids)
         request_data = dict(params=params)
         response = self.page.current_view.auth_service.send_closed_request(
             RequestMethod.POST,
