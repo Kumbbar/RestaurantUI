@@ -149,6 +149,11 @@ class ExcludeIdsMixinDatatable(object):
             return False
         return True
 
+    def get_params_for_request(self):
+        result = super().get_params_for_request()
+        result['page_size'] = 100000
+        return result
+
 
 class SearchMixinDatatable(object):
     def __init__(self, *args, **kwargs):

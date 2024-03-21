@@ -12,33 +12,32 @@ def get_param_ids(ids):
 
 
 class ManyToManyDataControl(ft.UserControl):
-    data_table: BaseDatatable
-    url: str = '/admin/user_permissions/'
+    all_data_table: BaseDatatable
+    current_data_table: BaseDatatable
+    url: str
 
-    def __init__(self):
+    def __init__(self, label_text):
         super().__init__()
         self.value = None
-        self.current_obj_data = UserPermissionsManySelectionsTable(autoload=False)
-        self.all_data = PermissionsManySelectionsTable()
+        self.current_obj_data = self.__class__.current_data_table(autoload=False)
+        self.all_data = self.__class__.all_data_table()
         self.content = ft.ResponsiveRow(
             controls=[
-                ft.Text('PERMISSIONS', col=12, weight=ft.FontWeight.BOLD, size=16),
+                ft.Text(label_text, col=12, weight=ft.FontWeight.BOLD, size=16),
                 ft.Text('ALL', col=6, weight=ft.FontWeight.BOLD, size=16),
                 ft.Text('CURRENT', col=6, weight=ft.FontWeight.BOLD, size=16),
                 ft.Column(
                     col=6,
                     controls=[
+                        ft.ElevatedButton('ADD', on_click=self.add_obj_relation),
                         self.all_data,
-                        ft.ElevatedButton('ADD', on_click=self.add_obj_relation)
-
                     ],
                 ),
                 ft.Column(
                     col=6,
                     controls=[
+                        ft.ElevatedButton('DELETE', on_click=self.delete_obj_relation),
                         self.current_obj_data,
-                        ft.ElevatedButton('DELETE', on_click=self.delete_obj_relation)
-
                     ]
                 )
             ]

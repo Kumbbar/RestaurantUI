@@ -8,6 +8,8 @@ from controls.file_pickers import FilePickerImage
 from controls.many_to_many import ManyToManyDataControl
 
 from core.dropdowns_list import ContentTypeDropDown, DishTypeDropDown, UserDropDown
+from core.many_to_many_list import UserPermissionsManyToManyDataControl, UserGroupsManyToManyDataControl, \
+    GroupPermissionsManyToManyDataControl
 
 
 class UsersCreateUpdateDialog(BaseCreateUpdateDialog):
@@ -26,7 +28,8 @@ class UsersCreateUpdateDialog(BaseCreateUpdateDialog):
 
     def get_extra_controls(self):
         return {
-            'permissions': ManyToManyDataControl()
+            'permissions': UserPermissionsManyToManyDataControl('PERMISSIONS'),
+            'groups': UserGroupsManyToManyDataControl('GROUPS'),
         }
 
 
@@ -57,6 +60,11 @@ class GroupsCreateUpdateDialog(BaseCreateUpdateDialog):
     def get_fields(self):
         return {
             'name': ft.TextField(label='name')
+        }
+
+    def get_extra_controls(self):
+        return {
+            'permissions': GroupPermissionsManyToManyDataControl('PERMISSIONS'),
         }
 
 

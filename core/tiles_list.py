@@ -6,6 +6,7 @@ import flet_core as ft
 from controls.many_to_many import ManyToManyDataControl
 from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable, GroupsTypesTable, DishesTable, \
     DishTypesTable, RestaurantTable
+from core.many_to_many_list import UserPermissionsManyToManyDataControl
 
 PASS = ft.Container(
             width=300,
@@ -81,7 +82,7 @@ def get_admin_tiles():
         NavigationTile(
             'CONTENT TYPES',
             ft.icons.DATASET,
-            next_control=ManyToManyDataControl()
+            next_control=UserPermissionsManyToManyDataControl('PERMISSIONS')
         ),
 
     ]

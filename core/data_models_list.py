@@ -34,6 +34,16 @@ class GroupsDataModel(BaseDataModel):
     pydantic_model = GroupResponse
 
 
+class UserGroupsDataModel(BaseDataModel):
+    url = '/admin/user_groups/'
+    pydantic_model = GroupResponse
+
+
+class GroupPermissionsDataModel(BaseDataModel):
+    url = '/admin/group_permissions/'
+    pydantic_model = PermissionResponse
+
+
 class DishesDataModel(BaseDataModel):
     url = '/food/dishes/'
     pydantic_model = DishResponse
