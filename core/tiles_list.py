@@ -1,11 +1,11 @@
 import copy
 
-from controls.items import NavigationTile
+from controls.items import NavigationTile, CustomWidthNavigationTile
 import flet_core as ft
 
 from controls.many_to_many import ManyToManyDataControl
 from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable, GroupsTypesTable, DishesTable, \
-    DishTypesTable, RestaurantTable
+    DishTypesTable, RestaurantTable, MenuTable
 from core.many_to_many_list import UserPermissionsManyToManyDataControl
 
 PASS = ft.Container(
@@ -95,6 +95,12 @@ def get_menu_tiles():
             'RESTAURANTS',
             ft.icons.RESTAURANT,
             next_control=RestaurantTable(),
+        ),
+        CustomWidthNavigationTile(
+            width=200,
+            title='MENU',
+            icon=ft.icons.MENU_BOOK,
+            next_control=MenuTable()
         ),
         NavigationTile(
             'DISHES',

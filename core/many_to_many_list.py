@@ -1,6 +1,7 @@
 from controls.many_to_many import ManyToManyDataControl
 from core.selection_datatables_list import UserPermissionsManySelectionsTable, PermissionsManySelectionsTable, \
-    UserGroupsManySelectionsTable, GroupsManySelectionsTable, GroupPermissionsManySelectionsTable
+    UserGroupsManySelectionsTable, GroupsManySelectionsTable, GroupPermissionsManySelectionsTable, \
+    DishesManySelectionsTable, MenuDishesManySelectionsTable
 
 
 class UserPermissionsManyToManyDataControl(ManyToManyDataControl):
@@ -19,3 +20,9 @@ class GroupPermissionsManyToManyDataControl(ManyToManyDataControl):
     current_data_table = GroupPermissionsManySelectionsTable
     all_data_table = PermissionsManySelectionsTable
     url = '/admin/group_permissions/'
+
+
+class MenuDishesManyToManyDataControl(ManyToManyDataControl):
+    current_data_table = MenuDishesManySelectionsTable
+    all_data_table = DishesManySelectionsTable
+    url = '/food/menu_dishes/'

@@ -105,17 +105,24 @@ class BaseDatatable(ft.UserControl):
             if not self.row_filter(data_row):
                 continue
             for key in self.__class__.visible_columns:
-                data_row.cells.append(
-                    ft.DataCell(
-                        CellText(getattr(row, key)),
-                        data=row.id,
-                    )
-                )
+                self.append_cell_to_row(row, key, data_row)
             result_rows.append(data_row)
+            self.add_row_end(data_row, row)
         return result_rows
 
     def row_filter(self, row) -> bool:
         return True
+
+    def add_row_end(self, data_row, row):
+        pass
+
+    def append_cell_to_row(self, row, key, data_row):
+        data_row.cells.append(
+            ft.DataCell(
+                CellText(getattr(row, key)),
+                data=row.id,
+            )
+        )
 
 
 class ManySelectionsMixinDatatable(object):
@@ -153,6 +160,33 @@ class ExcludeIdsMixinDatatable(object):
         result = super().get_params_for_request()
         result['page_size'] = 100000
         return result
+
+
+class ImageMixinDatatable(object):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.datatable.data_row_max_height = 70
+
+    def append_cell_to_row(self, row, key, data_row):
+        if key in ('image', ):
+            data_row.cells.append(
+                ft.DataCell(
+                    content=
+                    ft.Container(
+                        ft.Image(
+                            src=getattr(row, key),
+                            height=150,
+                            width=150,
+                            fit=ft.ImageFit.COVER,
+                        ),
+                        padding=ft.Padding(0, 5, 0, 5)
+                    ),
+                    data=row.id,
+                )
+            )
+            return 0
+        super().append_cell_to_row(row, key, data_row)
 
 
 class SearchMixinDatatable(object):
@@ -235,42 +269,6 @@ class PydanticDatatable(SearchMixinDatatable, BaseDatatable):
         for key, value in self.__class__.foreign_data_template.items():
             self.foreign_data[key] = value(self.page)
 
-    def convert_to_datatable_rows(self):
-        result_rows = []
-        for row in self.data.result_list:
-            data_row = self.get_row_template(row)
-
-            for key in self.__class__.visible_columns:
-                if key in self.foreign_data.keys():
-                    data_row.cells.append(
-                        ft.DataCell(
-                            CellText(self.foreign_data[key].foreign_data[getattr(row, key)]),
-                            data=row.id,
-                            on_double_tap=self.obj_event
-                        )
-                    )
-                else:
-                    data_row.cells.append(
-                        ft.DataCell(
-                            CellText(getattr(row, key)),
-                            data=row.id,
-                            on_double_tap=self.obj_event
-                        )
-                    )
-            data_row.cells.append(
-                ft.DataCell(
-                    ft.IconButton(
-                        ft.icons.DELETE,
-                        icon_color=ft.colors.RED_500,
-                        data=row.id,
-                        on_click=self.show_delete_dialog,
-                        tooltip='delete'
-                    )
-                )
-            )
-            result_rows.append(data_row)
-        return result_rows
-
     def show_create_dialog(self, _):
         create_dialog = self.__class__.dialog()
         self.page.dialog = create_dialog
@@ -285,7 +283,34 @@ class PydanticDatatable(SearchMixinDatatable, BaseDatatable):
         self.page.dialog = DatatableDeleteDialog(e.control.data, self)
         self.page.update()
 
+    def append_cell_to_row(self, row, key, data_row):
+        if key in self.foreign_data.keys():
+            data_row.cells.append(
+                ft.DataCell(
+                    CellText(self.foreign_data[key].foreign_data[getattr(row, key)]),
+                    data=row.id,
+                    on_double_tap=self.obj_event
+                )
+            )
+        else:
+            data_row.cells.append(
+                ft.DataCell(
+                    CellText(getattr(row, key)),
+                    data=row.id,
+                    on_double_tap=self.obj_event
+                )
+            )
 
-def test(e):
-    e.control.selected = not e.control.selected
-    e.control.update()
+    def add_row_end(self, data_row, row):
+        data_row.cells.append(
+            ft.DataCell(
+                ft.IconButton(
+                    ft.icons.DELETE,
+                    icon_color=ft.colors.RED_500,
+                    data=row.id,
+                    on_click=self.show_delete_dialog,
+                    tooltip='delete',
+
+                )
+            )
+        )

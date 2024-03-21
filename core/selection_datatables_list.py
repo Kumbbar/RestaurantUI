@@ -1,7 +1,8 @@
 from controls.datatables import (ManySelectionsMixinDatatable, BaseDatatable, SearchMixinDatatable,
-                                 ExcludeIdsMixinDatatable)
-from core.data_models_list import PermissionsDataModel, UserPermissionsDataModel, UserGroupsDataModel, GroupsDataModel, \
-    GroupPermissionsDataModel
+                                 ExcludeIdsMixinDatatable, ImageMixinDatatable)
+from core.data_models_list import (PermissionsDataModel, UserPermissionsDataModel, UserGroupsDataModel,
+                                   GroupsDataModel, GroupPermissionsDataModel, DishesDataModel, MenuDishesDataModel
+                                   )
 
 
 class PermissionsManySelectionsTable(ManySelectionsMixinDatatable, ExcludeIdsMixinDatatable,
@@ -16,7 +17,7 @@ class UserPermissionsManySelectionsTable(ManySelectionsMixinDatatable, SearchMix
 
 
 class GroupsManySelectionsTable(ManySelectionsMixinDatatable, ExcludeIdsMixinDatatable,
-                                     SearchMixinDatatable, BaseDatatable):
+                                SearchMixinDatatable, BaseDatatable):
     visible_columns = ['id', 'name']
     data_model = GroupsDataModel
 
@@ -29,3 +30,15 @@ class UserGroupsManySelectionsTable(ManySelectionsMixinDatatable, SearchMixinDat
 class GroupPermissionsManySelectionsTable(ManySelectionsMixinDatatable, SearchMixinDatatable, BaseDatatable):
     visible_columns = ['id', 'codename']
     data_model = GroupPermissionsDataModel
+
+
+class DishesManySelectionsTable(ImageMixinDatatable, ManySelectionsMixinDatatable, ExcludeIdsMixinDatatable,
+                                SearchMixinDatatable, BaseDatatable):
+    visible_columns = ['id', 'name', 'image']
+    data_model = DishesDataModel
+
+
+class MenuDishesManySelectionsTable(ImageMixinDatatable, ManySelectionsMixinDatatable,
+                                    SearchMixinDatatable, BaseDatatable):
+    visible_columns = ['id', 'name', 'image']
+    data_model = MenuDishesDataModel

@@ -9,7 +9,7 @@ from controls.many_to_many import ManyToManyDataControl
 
 from core.dropdowns_list import ContentTypeDropDown, DishTypeDropDown, UserDropDown
 from core.many_to_many_list import UserPermissionsManyToManyDataControl, UserGroupsManyToManyDataControl, \
-    GroupPermissionsManyToManyDataControl
+    GroupPermissionsManyToManyDataControl, MenuDishesManyToManyDataControl
 
 
 class UsersCreateUpdateDialog(BaseCreateUpdateDialog):
@@ -96,6 +96,20 @@ class DishTypesCreateUpdateDialog(BaseCreateUpdateDialog):
     def get_fields(self):
         return {
             'name': ft.TextField(label='name')
+        }
+
+
+class MenuCreateUpdateDialog(BaseCreateUpdateDialog):
+    url = '/food/menu/'
+
+    def get_fields(self):
+        return {
+            'name': ft.TextField(label='name')
+        }
+
+    def get_extra_controls(self):
+        return {
+            'dishes': MenuDishesManyToManyDataControl('DISHES')
         }
 
 
