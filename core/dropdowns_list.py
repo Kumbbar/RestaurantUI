@@ -1,5 +1,5 @@
 from controls.dropdown import CustomDropDown
-from core.data_models_list import ContentTypesDataModel, DishTypesDataModel, UsersDataModel
+from core.data_models_list import ContentTypesDataModel, DishTypesDataModel, UsersDataModel, RestaurantDataModel
 
 
 class ContentTypeDropDown(CustomDropDown):
@@ -15,3 +15,8 @@ class DishTypeDropDown(CustomDropDown):
 class UserDropDown(CustomDropDown):
     name = 'username'
     data_model = UsersDataModel
+
+
+class RestaurantDropDown(CustomDropDown):
+    name = 'name'
+    data_model = RestaurantDataModel

@@ -73,10 +73,10 @@ class BaseCreateUpdateDialog(ABC, ft.UserControl):
     def get_extra_controls(self):
         return {}
 
-    def __init__(self, id=''):
+    def __init__(self, datatable, id=''):
         super().__init__()
         self.id = id
-
+        self.datatable_ref = datatable
         self.fields = self.get_fields()
         self.extra_controls = self.get_extra_controls()
 
@@ -160,8 +160,7 @@ class BaseCreateUpdateDialog(ABC, ft.UserControl):
             data=fields_data,
             files=files_data
         )
-        if response.ok:
-            self.close()
+        return response
 
     def get_data(self):
         response = self.page.current_view.auth_service.send_closed_request(
@@ -175,8 +174,10 @@ class BaseCreateUpdateDialog(ABC, ft.UserControl):
         return self.content
 
     def save_click(self, _):
-        self.send_fields_data()
-        self.close()
+        response = self.send_fields_data()
+        if response.ok:
+            self.datatable_ref.refresh_data()
+            self.close()
 
     def no_click(self, _):
         self.close()

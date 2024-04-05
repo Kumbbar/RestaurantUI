@@ -6,7 +6,7 @@ from requests import Response
 import flet_core as ft
 from flet_core import Page
 
-from controls.bottom_sheets import BottomSheetServiceUnavailable, BottomSheetInvalidToken
+from controls.bottom_sheets import BottomSheetServiceUnavailable, BottomSheetInvalidToken, ExceptionBottomSheet
 from services.cryptography import decrypt_token
 from services import BaseService
 from settings import SESSION_TOKEN_KEY, BACKEND_BASE_URL
@@ -35,6 +35,11 @@ class BaseRequestService(BaseService):
 
     def _show_user_token_invalid(self):
         bottom_sheet = BottomSheetInvalidToken()
+        self.page_link.bottom_sheet = bottom_sheet
+        self.page_link.update()
+
+    def _show_exception(self, data):
+        bottom_sheet = ExceptionBottomSheet(data)
         self.page_link.bottom_sheet = bottom_sheet
         self.page_link.update()
 
@@ -85,6 +90,8 @@ class UserRequestService(BaseRequestService):
             response: Response = method(f'{BACKEND_BASE_URL}{url}', data=data, json=json, headers=self.all_headers, **kwargs)
             if response.status_code == 401:
                 self._show_user_token_invalid()
+            elif response.status_code >= 400:
+                self._show_exception(response.json())
             return response
         except requests.exceptions.ConnectionError:
             self._show_server_unavailable()

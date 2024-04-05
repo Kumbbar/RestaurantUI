@@ -44,3 +44,35 @@ class BottomSheetInvalidToken(ft.BottomSheet):
         )
         self.bgcolor = PastelColors.WHITE_BASE
         self.open = True
+
+
+class ExceptionBottomSheet(ft.BottomSheet):
+    def __init__(self, data: dict):
+        super().__init__()
+        self.content = ft.Container(
+            padding=ft.Padding(20, 10, 20, 10),
+            width=500,
+            content=ft.Column(
+                controls=self.convert_data(data),
+                tight=True
+            ),
+        )
+        self.bgcolor = PastelColors.WHITE_BASE
+        self.open = True
+
+    def convert_data(self, data):
+        result = []
+        for key, value in data.items():
+            key_result = ''
+            if isinstance(value, list):
+                for data in value:
+                    key_result += f' {data}'
+            else:
+                key_result = value
+            result.append(
+                ft.Text(
+                    value=f'{key} - {key_result}',
+                    size=14
+                )
+            )
+        return result

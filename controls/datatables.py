@@ -32,6 +32,7 @@ class BaseDatatable(ft.UserControl):
             column_spacing=10,
         )
         self.header_navigation = []
+        self.footer_navigation = []
         self.content = self.create_content()
 
     def build(self):
@@ -61,7 +62,11 @@ class BaseDatatable(ft.UserControl):
                         controls=[
                             self.datatable
                         ]
-                    )
+                    ),
+                    ft.ResponsiveRow(
+                        controls=self.footer_navigation,
+                        alignment=ft.MainAxisAlignment.END
+                    ),
                 ]
             )
         )
@@ -197,7 +202,7 @@ class SearchMixinDatatable(object):
             height=30,
             text_size=14,
             content_padding=ft.Padding(10, 0, 0, 0),
-            col={"xs": 7, "sm": 7, "lg": 4, "xl": 4}
+            col={"xs": 4, "sm": 4, "lg": 4, "xl": 4}
         )
         self.refresh_button = ft.IconButton(
             icon=ft.icons.REFRESH_ROUNDED,
@@ -207,7 +212,6 @@ class SearchMixinDatatable(object):
             col={"xs": 2, "sm": 2, "lg": 1, "xl": 1}
         )
         self.header_navigation.extend([self.search_field, self.refresh_button])
-        self.create_content()
 
     def get_params_for_request(self):
         result = dict()
@@ -219,14 +223,74 @@ class SearchMixinDatatable(object):
         self.resize()
 
 
-class PydanticDatatable(SearchMixinDatatable, BaseDatatable):
+class PaginationMixinDatatable(object):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.page_number = 1
+        self.back_button = ft.IconButton(
+            icon=ft.icons.ARROW_LEFT,
+            col={"xs": 2, "sm": 2, "lg": 1, "xl": 1},
+            on_click=self.previous_page_click
+        )
+        self.current_page_number_label = ft.Text(
+            value=str(self.page_number),
+            col={"xs": 2, "sm": 2, "lg": 1, "xl": 1},
+            text_align=ft.TextAlign.CENTER,
+            size=16,
+            weight=ft.FontWeight.BOLD,
+        )
+
+        self.next_button = ft.IconButton(
+            icon=ft.icons.ARROW_RIGHT,
+            col={"xs": 2, "sm": 2, "lg": 1, "xl": 1},
+            on_click=self.next_page_click
+        )
+        self.rows_on_page_field = ft.TextField(
+            col={"xs": 2, "sm": 2, "lg": 1, "xl": 1},
+            height=55,
+            value='50',
+            text_align=ft.TextAlign.CENTER,
+            content_padding=ft.Padding(0, 0, 0, 10),
+            max_length=4
+        )
+        self.footer_navigation.extend([
+            self.back_button,
+            ft.Container(
+                padding=ft.Padding(0, 5, 0, 0), height=30,
+                col={"xs": 2, "sm": 2, "lg": 1, "xl": 1}, content=self.current_page_number_label
+            ),
+            self.next_button, self.rows_on_page_field
+        ])
+
+    def get_params_for_request(self):
+        result = super().get_params_for_request()
+        result['page_size'] = int(self.rows_on_page_field.value)
+        result['page'] = self.page_number
+        return result
+
+    def next_page_click(self, _):
+        self.page_number += 1
+        self.set_label_page_number()
+        self.refresh_data()
+
+    def previous_page_click(self, _):
+        if self.page_number != 1:
+            self.page_number -= 1
+        self.set_label_page_number()
+        self.refresh_data()
+
+    def set_label_page_number(self):
+        self.current_page_number_label.value = self.page_number
+        self.current_page_number_label.update()
+
+
+class PydanticDatatable(PaginationMixinDatatable, SearchMixinDatatable, BaseDatatable):
     foreign_data_template = dict()
     dialog: BaseCreateUpdateDialog
     url: str
 
     def __init__(self):
         super().__init__()
-        print(self.__class__.__mro__, 'ykras')
         self.foreign_data = dict()
         self.create_button = ft.OutlinedButton(
             'CREATE',
@@ -260,22 +324,17 @@ class PydanticDatatable(SearchMixinDatatable, BaseDatatable):
         rows = self.convert_to_datatable_rows()
         return rows
 
-    def get_params_for_request(self):
-        result = dict()
-        result['search'] = self.search_field.value
-        return result
-
     def __get_foreign_data(self):
         for key, value in self.__class__.foreign_data_template.items():
             self.foreign_data[key] = value(self.page)
 
     def show_create_dialog(self, _):
-        create_dialog = self.__class__.dialog()
+        create_dialog = self.__class__.dialog(self)
         self.page.dialog = create_dialog
         self.page.update()
 
     def obj_event(self, e):
-        update_dialog = self.__class__.dialog(e.control.data)
+        update_dialog = self.__class__.dialog(self, e.control.data)
         self.page.dialog = update_dialog
         self.page.update()
 
