@@ -1,10 +1,13 @@
 from controls.datatables import PydanticDatatable, ImageMixinDatatable
 from core.data_models_list import PermissionsDataModel, UsersDataModel, ContentTypesDataModel, GroupsDataModel, \
-    DishesDataModel, DishTypesDataModel, RestaurantDataModel, MenuDataModel
+    DishesDataModel, DishTypesDataModel, RestaurantDataModel, MenuDataModel, RestaurantPlanMenuDataModel
 from core.dialogs_list import PermissionsCreateUpdateDialog, UsersCreateUpdateDialog, ContentTypesCreateUpdateDialog, \
     GroupsCreateUpdateDialog, DishesCreateUpdateDialog, DishTypesCreateUpdateDialog, RestaurantCreateUpdateDialog, \
-    MenuCreateUpdateDialog
-from core.dict_data_models import ContentTypeDictDataModeL, DishTypeDictDataModeL
+    MenuCreateUpdateDialog, RestaurantPlanMenuCreateUpdateDialog
+from core.dict_data_models import ContentTypeDictDataModeL, DishTypeDictDataModeL, MenuDictDataModeL, \
+    RestaurantDictDataModeL
+from core.dropdowns_list import RestaurantDropDown
+from pydantic_models.restaurant_plan_menu import RestaurantPlanMenuResponse
 
 
 # ADMIN
@@ -87,3 +90,24 @@ class RestaurantTable(PydanticDatatable):
     url = '/food/restaurants/'
     dialog = RestaurantCreateUpdateDialog
     data_model = RestaurantDataModel
+
+
+class RestaurantPlanMenuTable(PydanticDatatable):
+    visible_columns = [
+        'id',
+        'restaurant',
+        'menu',
+        'date_start',
+        'date_end',
+    ]
+    url = '/food/restaurant_plan_menu/'
+
+    foreign_data_template = {
+        'menu': MenuDictDataModeL,
+        'restaurant': RestaurantDictDataModeL,
+    }
+    search_dropdowns = {
+        'restaurant': RestaurantDropDown('restaurant', width=200)
+    }
+    dialog = RestaurantPlanMenuCreateUpdateDialog
+    data_model = RestaurantPlanMenuDataModel

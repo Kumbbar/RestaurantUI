@@ -7,7 +7,7 @@ import flet_core as ft
 from controls.file_pickers import FilePickerImage
 from controls.many_to_many import ManyToManyDataControl
 
-from core.dropdowns_list import ContentTypeDropDown, DishTypeDropDown, UserDropDown, RestaurantDropDown
+from core.dropdowns_list import ContentTypeDropDown, DishTypeDropDown, UserDropDown, RestaurantDropDown, MenuDropDown
 from core.many_to_many_list import UserPermissionsManyToManyDataControl, UserGroupsManyToManyDataControl, \
     GroupPermissionsManyToManyDataControl, MenuDishesManyToManyDataControl
 
@@ -125,4 +125,16 @@ class RestaurantCreateUpdateDialog(BaseCreateUpdateDialog):
             'latitude': ft.TextField(label='latitude', keyboard_type=ft.KeyboardType.NUMBER),
             'longitude': ft.TextField(label='longitude', keyboard_type=ft.KeyboardType.NUMBER),
             'date_of_open': InputDatePicker('date of open')
+        }
+
+
+class RestaurantPlanMenuCreateUpdateDialog(BaseCreateUpdateDialog):
+    url = '/food/restaurant_plan_menu/'
+
+    def get_fields(self):
+        return {
+            'restaurant': RestaurantDropDown('restaurant'),
+            'menu': MenuDropDown('menu'),
+            'date_start': InputDatePicker('date start'),
+            'date_end': InputDatePicker('date end')
         }

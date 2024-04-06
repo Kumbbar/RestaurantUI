@@ -5,6 +5,7 @@ from pydantic_models.dishes import DishResponse
 from pydantic_models.groups import GroupResponse
 from pydantic_models.menu import MenuResponse
 from pydantic_models.permissions import PermissionResponse
+from pydantic_models.restaurant_plan_menu import RestaurantPlanMenuResponse
 from pydantic_models.restaurants import RestaurantResponse
 from pydantic_models.user_profile import UserProfileResponse
 from pydantic_models.users import UserResponse
@@ -73,3 +74,8 @@ class UserProfileDataModel(BaseDataModel):
 class RestaurantDataModel(BaseDataModel):
     url = '/food/restaurants/'
     pydantic_model = RestaurantResponse
+
+
+class RestaurantPlanMenuDataModel(BaseDataModel):
+    url = '/food/restaurant_plan_menu/'
+    pydantic_model = RestaurantPlanMenuResponse

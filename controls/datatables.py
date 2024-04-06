@@ -1,3 +1,4 @@
+import copy
 from typing import List
 
 import flet as ft
@@ -216,11 +217,29 @@ class SearchMixinDatatable(object):
     def get_params_for_request(self):
         result = dict()
         result['search'] = self.search_field.value
+        if hasattr(self, 'page_number') and self.search_field.value:
+            self.page_number = 1
+            self.set_label_page_number()
         return result
 
     def refresh_data_click(self, e):
         self.refresh_data()
         self.resize()
+
+
+class DropDownFilterMixinDatatable(object):
+    search_dropdowns: dict = {}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.search_dropdowns = copy.deepcopy(self.__class__.search_dropdowns)
+        self.header_navigation.extend(self.search_dropdowns.values())
+
+    def get_params_for_request(self):
+        result = super().get_params_for_request()
+        for key, element in self.search_dropdowns.items():
+            result[key] = element.value
+        return result
 
 
 class PaginationMixinDatatable(object):
@@ -284,7 +303,10 @@ class PaginationMixinDatatable(object):
         self.current_page_number_label.update()
 
 
-class PydanticDatatable(PaginationMixinDatatable, SearchMixinDatatable, BaseDatatable):
+class PydanticDatatable(DropDownFilterMixinDatatable,
+                        PaginationMixinDatatable,
+                        SearchMixinDatatable,
+                        BaseDatatable):
     foreign_data_template = dict()
     dialog: BaseCreateUpdateDialog
     url: str

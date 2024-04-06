@@ -8,19 +8,25 @@ class CustomDropDown(ft.UserControl):
     name: str
     data_model: BaseDataModel
 
-    def __init__(self, label: str):
+    def __init__(self, label: str, width=600):
         super().__init__()
         self.value = None
 
-        self.content = ft.Dropdown(
-            width=600,
+        self.dropdown = ft.Dropdown(
+            width=width,
             label=label,
             on_change=self.change_option,
-            value=self.value
+            value=self.value,
+        )
+        self.content = ft.Container(
+            content=self.dropdown
         )
 
     def change_option(self, _):
-        self.value = self.content.value
+        if self.dropdown.value == 'None':  # For some strange empty option logic
+            self.value = ''
+        else:
+            self.value = self.dropdown.value
         self.update()
 
     def get_key_and_name(self, data):
@@ -35,7 +41,7 @@ class CustomDropDown(ft.UserControl):
         return result
 
     def update(self):
-        self.content.value = self.value
+        self.dropdown.value = self.value
         super().update()
 
     def build(self):
@@ -48,9 +54,13 @@ class CustomDropDown(ft.UserControl):
 
     def add_options(self, data):
         key_name_data = self.get_key_and_name(data)
+        self.dropdown.options.append(
+            ft.dropdown.Option(key='None')
+        )
         for data in key_name_data:
-            self.content.options.append(
-                ft.dropdown.Option(**data)
+            self.dropdown.options.append(
+                ft.dropdown.Option(**data),
+
             )
 
 
