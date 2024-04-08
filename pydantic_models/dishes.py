@@ -6,7 +6,7 @@ from . import BaseResponseObject, BaseResponse
 class Dish(BaseResponseObject):
     name: str
     description: str
-    dish_type: int
+    dish_type: Optional[int] = None
     weight: int
     price: int
     image: Optional[str] = None

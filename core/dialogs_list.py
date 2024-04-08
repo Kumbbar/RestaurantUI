@@ -5,7 +5,7 @@ from controls.dialogs import BaseCreateUpdateDialog
 import flet_core as ft
 
 from controls.file_pickers import FilePickerImage
-from controls.many_to_many import ManyToManyDataControl
+from controls.menu_render import CreateMenuTemplate
 
 from core.dropdowns_list import ContentTypeDropDown, DishTypeDropDown, UserDropDown, RestaurantDropDown, MenuDropDown
 from core.many_to_many_list import UserPermissionsManyToManyDataControl, UserGroupsManyToManyDataControl, \
@@ -111,7 +111,8 @@ class MenuCreateUpdateDialog(BaseCreateUpdateDialog):
 
     def get_extra_controls(self):
         return {
-            'dishes': MenuDishesManyToManyDataControl('DISHES')
+            'dishes': MenuDishesManyToManyDataControl('DISHES'),
+            'dish_ordering': CreateMenuTemplate()
         }
 
 

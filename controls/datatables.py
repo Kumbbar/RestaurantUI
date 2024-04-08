@@ -368,7 +368,9 @@ class PydanticDatatable(DropDownFilterMixinDatatable,
         if key in self.foreign_data.keys():
             data_row.cells.append(
                 ft.DataCell(
-                    CellText(self.foreign_data[key].foreign_data[getattr(row, key)]),
+                    CellText(self.foreign_data[key].foreign_data.get(
+                        getattr(row, key), '')
+                    ),
                     data=row.id,
                     on_double_tap=self.obj_event
                 )
