@@ -2,7 +2,7 @@ import flet_core as ft
 
 from consts.colors import PastelColors
 from controls.dialogs import LogoutDialog
-from core.tiles_list import get_admin_tiles, get_menu_tiles
+from core.tiles_list import get_admin_tiles, get_menu_tiles, get_clients_service_tiles
 from settings import LOGIN_PAGE_VIEW_URL
 
 
@@ -18,27 +18,32 @@ class MainMenu(ft.Container):
         self.border_radius = 10
 
         self.destinations = [
-                    ft.NavigationRailDestination(
-                        label='ADMIN',
-                        selected_icon=ft.icons.ADMIN_PANEL_SETTINGS,
-                        icon=ft.icons.ADMIN_PANEL_SETTINGS_OUTLINED,
-                    ),
-                    ft.NavigationRailDestination(
-                        label='FOOD',
-                        selected_icon=ft.icons.FASTFOOD,
-                        icon=ft.icons.FASTFOOD,
-                    ),
-                    ft.NavigationRailDestination(
-                        label='SETTINGS',
-                        selected_icon=ft.icons.SETTINGS,
-                        icon=ft.icons.SETTINGS_OUTLINED,
-                    ),
-                    ft.NavigationRailDestination(
-                        label='LOGOUT',
-                        selected_icon=ft.icons.LOGOUT,
-                        icon=ft.icons.LOGOUT,
-                    )
-                ]
+            ft.NavigationRailDestination(
+                label='ADMIN',
+                selected_icon=ft.icons.ADMIN_PANEL_SETTINGS,
+                icon=ft.icons.ADMIN_PANEL_SETTINGS_OUTLINED,
+            ),
+            ft.NavigationRailDestination(
+                label='FOOD',
+                selected_icon=ft.icons.FASTFOOD,
+                icon=ft.icons.FASTFOOD,
+            ),
+            ft.NavigationRailDestination(
+                label='CLIENTS SERVICE',
+                selected_icon=ft.icons.MONEY,
+                icon=ft.icons.MONEY_SHARP,
+            ),
+            ft.NavigationRailDestination(
+                label='SETTINGS',
+                selected_icon=ft.icons.SETTINGS,
+                icon=ft.icons.SETTINGS_OUTLINED,
+            ),
+            ft.NavigationRailDestination(
+                label='LOGOUT',
+                selected_icon=ft.icons.LOGOUT,
+                icon=ft.icons.LOGOUT,
+            )
+        ]
         self.content = ft.NavigationRail(
                 indicator_color=PastelColors.MEDIUM_BROWN,
                 on_change=self.change_main_menu,
@@ -64,6 +69,9 @@ class MainMenu(ft.Container):
         if e.control.selected_index == 1:  # MENU:
             self.page.current_view.workspace.controls.clear()
             self.page.current_view.workspace.controls = get_menu_tiles()
+        if e.control.selected_index == 2:  # CLIENTS SERVICE:
+            self.page.current_view.workspace.controls.clear()
+            self.page.current_view.workspace.controls = get_clients_service_tiles()
         if e.control.selected_index == 3:
             self.page.dialog = LogoutDialog(logout_event=self.logout_click)
         self.page.update()

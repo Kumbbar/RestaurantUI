@@ -1,9 +1,10 @@
 from controls.datatables import PydanticDatatable, ImageMixinDatatable
 from core.data_models_list import PermissionsDataModel, UsersDataModel, ContentTypesDataModel, GroupsDataModel, \
-    DishesDataModel, DishTypesDataModel, RestaurantDataModel, MenuDataModel, RestaurantPlanMenuDataModel
+    DishesDataModel, DishTypesDataModel, RestaurantDataModel, MenuDataModel, RestaurantPlanMenuDataModel, \
+    ClientsDataModel
 from core.dialogs_list import PermissionsCreateUpdateDialog, UsersCreateUpdateDialog, ContentTypesCreateUpdateDialog, \
     GroupsCreateUpdateDialog, DishesCreateUpdateDialog, DishTypesCreateUpdateDialog, RestaurantCreateUpdateDialog, \
-    MenuCreateUpdateDialog, RestaurantPlanMenuCreateUpdateDialog
+    MenuCreateUpdateDialog, RestaurantPlanMenuCreateUpdateDialog, ClientsCreateUpdateDialog
 from core.dict_data_models import ContentTypeDictDataModeL, DishTypeDictDataModeL, MenuDictDataModeL, \
     RestaurantDictDataModeL
 from core.dropdowns_list import RestaurantDropDown
@@ -111,3 +112,10 @@ class RestaurantPlanMenuTable(PydanticDatatable):
     }
     dialog = RestaurantPlanMenuCreateUpdateDialog
     data_model = RestaurantPlanMenuDataModel
+
+
+class ClientsTable(PydanticDatatable):
+    visible_columns = ['id', 'name', 'surname', 'phone_number']
+    url = '/food/clients/'
+    dialog = ClientsCreateUpdateDialog
+    data_model = ClientsDataModel

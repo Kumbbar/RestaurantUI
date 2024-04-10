@@ -139,3 +139,15 @@ class RestaurantPlanMenuCreateUpdateDialog(BaseCreateUpdateDialog):
             'date_start': InputDatePicker('date start'),
             'date_end': InputDatePicker('date end')
         }
+
+
+class ClientsCreateUpdateDialog(BaseCreateUpdateDialog):
+    url = '/food/clients/'
+
+    def get_fields(self):
+        return {
+            'name': ft.TextField(label='name'),
+            'surname': ft.TextField(label='surname'),
+            'patronymic': ft.TextField(label='patronymic'),
+            'phone_number': ft.TextField(label='codename', value='+')
+        }

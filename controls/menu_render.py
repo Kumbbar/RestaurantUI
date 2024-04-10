@@ -30,4 +30,4 @@ class CreateMenuTemplate(ft.UserControl):
         return self.content
 
     def create_menu_click(self, _):
-        self.page.launch_url(f'{BACKEND_BASE_URL}/render_menu/{self.value}/?order={self.dish_types_order.value}')
+        self.page.launch_url(f'{BACKEND_BASE_URL}/food/render_menu/{self.value}/?order={self.dish_types_order.value}')

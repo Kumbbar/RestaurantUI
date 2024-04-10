@@ -5,7 +5,7 @@ import flet_core as ft
 
 from controls.many_to_many import ManyToManyDataControl
 from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable, GroupsTypesTable, DishesTable, \
-    DishTypesTable, RestaurantTable, MenuTable, RestaurantPlanMenuTable
+    DishTypesTable, RestaurantTable, MenuTable, RestaurantPlanMenuTable, ClientsTable
 from core.many_to_many_list import UserPermissionsManyToManyDataControl
 
 PASS = ft.Container(
@@ -117,5 +117,32 @@ def get_menu_tiles():
             ft.icons.ACCESS_TIME,
             next_control=RestaurantPlanMenuTable()
         ),
+    ]
+    return [create_tiles_scroll(menu_tiles)]
+
+
+def get_clients_service_tiles():
+    menu_tiles = [
+        NavigationTile(
+            'TABLE RESERVATION',
+            ft.icons.TABLE_RESTAURANT,
+            next_control=PASS,
+        ),
+        CustomWidthNavigationTile(
+            width=200,
+            title='ORDER',
+            icon=ft.icons.ATTACH_MONEY,
+            next_control=PASS
+        ),
+        NavigationTile(
+            'BLACK LIST',
+            ft.icons.PERSON_OFF,
+            next_control=PASS
+        ),
+        NavigationTile(
+            'CLIENTS',
+            ft.icons.PERSON,
+            next_control=ClientsTable()
+        )
     ]
     return [create_tiles_scroll(menu_tiles)]

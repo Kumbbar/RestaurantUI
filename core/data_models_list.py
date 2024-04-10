@@ -1,4 +1,5 @@
 from data_models import BaseDataModel
+from pydantic_models.clients import ClientResponse
 from pydantic_models.content_types import ContentTypeResponse
 from pydantic_models.dish_types import DishTypeResponse
 from pydantic_models.dishes import DishResponse
@@ -79,3 +80,8 @@ class RestaurantDataModel(BaseDataModel):
 class RestaurantPlanMenuDataModel(BaseDataModel):
     url = '/food/restaurant_plan_menu/'
     pydantic_model = RestaurantPlanMenuResponse
+
+
+class ClientsDataModel(BaseDataModel):
+    url = '/food/clients/'
+    pydantic_model = ClientResponse
