@@ -347,8 +347,8 @@ class PydanticDatatable(DropDownFilterMixinDatatable,
         return rows
 
     def __get_foreign_data(self):
-        for key, value in self.__class__.foreign_data_template.items():
-            self.foreign_data[key] = value(self.page)
+        for key, dict_data_model in self.__class__.foreign_data_template.items():
+            self.foreign_data[key] = dict_data_model(self.page)
 
     def show_create_dialog(self, _):
         create_dialog = self.__class__.dialog(self)

@@ -1,12 +1,13 @@
 from controls.datatables import PydanticDatatable, ImageMixinDatatable
 from core.data_models_list import PermissionsDataModel, UsersDataModel, ContentTypesDataModel, GroupsDataModel, \
     DishesDataModel, DishTypesDataModel, RestaurantDataModel, MenuDataModel, RestaurantPlanMenuDataModel, \
-    ClientsDataModel
+    ClientsDataModel, OrderStagesDataModel, TablesDataModel, OrdersDataModel
 from core.dialogs_list import PermissionsCreateUpdateDialog, UsersCreateUpdateDialog, ContentTypesCreateUpdateDialog, \
     GroupsCreateUpdateDialog, DishesCreateUpdateDialog, DishTypesCreateUpdateDialog, RestaurantCreateUpdateDialog, \
-    MenuCreateUpdateDialog, RestaurantPlanMenuCreateUpdateDialog, ClientsCreateUpdateDialog
+    MenuCreateUpdateDialog, RestaurantPlanMenuCreateUpdateDialog, ClientsCreateUpdateDialog, \
+    OrderStagesCreateUpdateDialog, TablesCreateUpdateDialog, OrdersCreateUpdateDialog
 from core.dict_data_models import ContentTypeDictDataModeL, DishTypeDictDataModeL, MenuDictDataModeL, \
-    RestaurantDictDataModeL
+    RestaurantDictDataModeL, ClientDictDataModel, TablesDictDataModel, OrderStageDictDataModel
 from core.dropdowns_list import RestaurantDropDown
 from pydantic_models.restaurant_plan_menu import RestaurantPlanMenuResponse
 
@@ -119,3 +120,32 @@ class ClientsTable(PydanticDatatable):
     url = '/food/clients/'
     dialog = ClientsCreateUpdateDialog
     data_model = ClientsDataModel
+
+
+class OrderStagesTable(PydanticDatatable):
+    visible_columns = ['id', 'name',]
+    url = '/food/order_stages/'
+    dialog = OrderStagesCreateUpdateDialog
+    data_model = OrderStagesDataModel
+
+
+class TablesTable(PydanticDatatable):
+    visible_columns = ['id', 'number', 'restaurant', 'description',]
+    url = '/food/tables/'
+    foreign_data_template = {
+        'restaurant': RestaurantDictDataModeL
+    }
+    dialog = TablesCreateUpdateDialog
+    data_model = TablesDataModel
+
+
+class OrdersTable(PydanticDatatable):
+    visible_columns = ['id', 'client', 'table', 'stage', 'created_at']
+    url = '/food/orders/'
+    foreign_data_template = {
+        'client': ClientDic4tDataModel,
+        'table': TablesDictDataModel,
+        'stage': OrderStageDictDataModel
+    }
+    dialog = OrdersCreateUpdateDialog
+    data_model = OrdersDataModel

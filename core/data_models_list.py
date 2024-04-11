@@ -5,9 +5,12 @@ from pydantic_models.dish_types import DishTypeResponse
 from pydantic_models.dishes import DishResponse
 from pydantic_models.groups import GroupResponse
 from pydantic_models.menu import MenuResponse
+from pydantic_models.order import OrderResponse
+from pydantic_models.order_stages import OrderStageResponse
 from pydantic_models.permissions import PermissionResponse
 from pydantic_models.restaurant_plan_menu import RestaurantPlanMenuResponse
 from pydantic_models.restaurants import RestaurantResponse
+from pydantic_models.tables import TableResponse
 from pydantic_models.user_profile import UserProfileResponse
 from pydantic_models.users import UserResponse
 
@@ -85,3 +88,18 @@ class RestaurantPlanMenuDataModel(BaseDataModel):
 class ClientsDataModel(BaseDataModel):
     url = '/food/clients/'
     pydantic_model = ClientResponse
+
+
+class OrderStagesDataModel(BaseDataModel):
+    url = '/food/order_stages/'
+    pydantic_model = OrderStageResponse
+
+
+class TablesDataModel(BaseDataModel):
+    url = '/food/tables/'
+    pydantic_model = TableResponse
+
+
+class OrdersDataModel(BaseDataModel):
+    url = '/food/orders/'
+    pydantic_model = OrderResponse

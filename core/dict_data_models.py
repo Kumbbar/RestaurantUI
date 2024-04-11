@@ -1,5 +1,5 @@
 from core.data_models_list import ContentTypesDataModel, DishTypesDataModel, UsersDataModel, MenuDataModel, \
-    RestaurantDataModel
+    RestaurantDataModel, ClientsDataModel, TablesDataModel, OrderStagesDataModel
 from data_models.dict_model import DictDataModeL
 
 
@@ -16,4 +16,16 @@ class MenuDictDataModeL(DictDataModeL, MenuDataModel):
 
 
 class RestaurantDictDataModeL(DictDataModeL, RestaurantDataModel):
+    name = 'name'
+
+
+class ClientDictDataModel(DictDataModeL, ClientsDataModel):
+    name = ['name', 'surname']
+
+
+class TablesDictDataModel(DictDataModeL, TablesDataModel):
+    name = 'number'
+
+
+class OrderStageDictDataModel(DictDataModeL, OrderStagesDataModel):
     name = 'name'

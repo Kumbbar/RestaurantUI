@@ -17,10 +17,16 @@ class CustomDropDown(ft.UserControl):
             label=label,
             on_change=self.change_option,
             value=self.value,
+            col=8
         )
-        self.content = ft.Container(
-            content=self.dropdown
+        self.search_field = ft.TextField(label='dropdown search', width=100, on_change=self.search_field_change, col=4)
+        self.content = ft.ResponsiveRow(
+            controls=[self.dropdown, self.search_field]
         )
+
+    def search_field_change(self, _):
+        self.dropdown.options.clear()
+        self.get_data()
 
     def change_option(self, _):
         if self.dropdown.value == 'None':  # For some strange empty option logic
@@ -48,8 +54,13 @@ class CustomDropDown(ft.UserControl):
         return self.content
 
     def did_mount(self):
-        data = self.__class__.data_model(self.page)
-        self.add_options(data.result_list)
+        self.get_data()
+
+    def get_data(self):
+        request_data = dict(params=dict(search=self.search_field.value))
+        data = self.__class__.data_model(self.page, **request_data)
+        if data.result_list:
+            self.add_options(data.result_list)
         self.update()
 
     def add_options(self, data):
