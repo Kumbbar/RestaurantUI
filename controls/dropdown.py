@@ -75,3 +75,28 @@ class CustomDropDown(ft.UserControl):
             )
 
 
+class OrderStageDropDown(CustomDropDown):
+    def get_data(self):
+        data = [
+            dict(
+                key='not ready',
+                text='not ready'
+            ),
+            dict(
+                key='ready',
+                text='ready'
+            ),
+            dict(
+                key='finished',
+                text='finished'
+            )
+        ]
+        self.dropdown.options.append(
+            ft.dropdown.Option(key='None')
+        )
+        for obj in data:
+            self.dropdown.options.append(
+                ft.dropdown.Option(**obj),
+
+            )
+        self.update()

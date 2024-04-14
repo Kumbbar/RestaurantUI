@@ -6,9 +6,10 @@ import flet_core as ft
 
 from controls.file_pickers import FilePickerImage
 from controls.menu_render import CreateMenuTemplate
+from controls.order_dishes import OrderDishEditor
 
 from core.dropdowns_list import ContentTypeDropDown, DishTypeDropDown, UserDropDown, RestaurantDropDown, MenuDropDown, \
-    ClientDropDown, OrderStageDropDown, TablesDropDown
+    ClientDropDown, TablesDropDown, RestaurantTablesDropDown
 from core.many_to_many_list import UserPermissionsManyToManyDataControl, UserGroupsManyToManyDataControl, \
     GroupPermissionsManyToManyDataControl, MenuDishesManyToManyDataControl
 
@@ -154,15 +155,6 @@ class ClientsCreateUpdateDialog(BaseCreateUpdateDialog):
         }
 
 
-class OrderStagesCreateUpdateDialog(BaseCreateUpdateDialog):
-    url = '/food/order_stages/'
-
-    def get_fields(self):
-        return {
-            'name': ft.TextField(label='name')
-        }
-
-
 class TablesCreateUpdateDialog(BaseCreateUpdateDialog):
     url = '/food/tables/'
 
@@ -180,6 +172,10 @@ class OrdersCreateUpdateDialog(BaseCreateUpdateDialog):
     def get_fields(self):
         return {
             'client': ClientDropDown('client'),
-            'stage': OrderStageDropDown('order stage'),
-            'table': TablesDropDown('table number')
+            'table': RestaurantTablesDropDown('table number')
+        }
+
+    def get_extra_controls(self):
+        return {
+            'order_dishes': OrderDishEditor('ORDER DISHES')
         }

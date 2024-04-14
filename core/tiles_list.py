@@ -5,9 +5,11 @@ import flet_core as ft
 
 from controls.many_to_many import ManyToManyDataControl
 from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable, GroupsTypesTable, DishesTable, \
-    DishTypesTable, RestaurantTable, MenuTable, RestaurantPlanMenuTable, ClientsTable, OrderStagesTable, TablesTable, \
+    DishTypesTable, RestaurantTable, MenuTable, RestaurantPlanMenuTable, ClientsTable, TablesTable, \
     OrdersTable
 from core.many_to_many_list import UserPermissionsManyToManyDataControl
+from core.order_dishes_table import OrderDishesCookTable, OrderDishesReadyTable
+from core.selection_datatables_list import UserGroupsManySelectionsTable
 
 PASS = ft.Container(
             width=300,
@@ -114,11 +116,6 @@ def get_menu_tiles():
             next_control=DishTypesTable()
         ),
         NavigationTile(
-            'ORDER STAGES',
-            ft.icons.ATTACH_MONEY_ROUNDED,
-            next_control=OrderStagesTable()
-        ),
-        NavigationTile(
             'RESTAURANT TABLES',
             ft.icons.TABLE_RESTAURANT_ROUNDED,
             next_control=TablesTable()
@@ -141,6 +138,12 @@ def get_clients_service_tiles():
         ),
         CustomWidthNavigationTile(
             width=200,
+            title='READY DISHES',
+            icon=ft.icons.EMOJI_FOOD_BEVERAGE,
+            next_control=OrderDishesReadyTable()
+        ),
+        CustomWidthNavigationTile(
+            width=200,
             title='ORDER',
             icon=ft.icons.ATTACH_MONEY,
             next_control=OrdersTable()
@@ -154,6 +157,17 @@ def get_clients_service_tiles():
             'CLIENTS',
             ft.icons.PERSON,
             next_control=ClientsTable()
+        )
+    ]
+    return [create_tiles_scroll(menu_tiles)]
+
+
+def get_cooking_tiles():
+    menu_tiles = [
+        NavigationTile(
+            'ORDERED DISHES',
+            ft.icons.EMOJI_FOOD_BEVERAGE,
+            next_control=OrderDishesCookTable(),
         )
     ]
     return [create_tiles_scroll(menu_tiles)]

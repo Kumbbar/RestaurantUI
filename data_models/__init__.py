@@ -34,7 +34,6 @@ class BaseDataModel(object):
     def __get_data(self, **kwargs):
         return self.__get_pydantic_response(**kwargs)
 
-
     def __validate_response(self, response):
         try:
             return self.__class__.pydantic_model.model_validate_json(

@@ -1,16 +1,22 @@
-from controls.datatables import PydanticDatatable, ImageMixinDatatable
+from controls.datatables import PydanticDatatable, ImageMixinDatatable, SearchMixinDatatable, BaseDatatable
+from controls.dropdown import OrderStageDropDown
 from core.data_models_list import PermissionsDataModel, UsersDataModel, ContentTypesDataModel, GroupsDataModel, \
     DishesDataModel, DishTypesDataModel, RestaurantDataModel, MenuDataModel, RestaurantPlanMenuDataModel, \
-    ClientsDataModel, OrderStagesDataModel, TablesDataModel, OrdersDataModel
-from core.dialogs_list import PermissionsCreateUpdateDialog, UsersCreateUpdateDialog, ContentTypesCreateUpdateDialog, \
-    GroupsCreateUpdateDialog, DishesCreateUpdateDialog, DishTypesCreateUpdateDialog, RestaurantCreateUpdateDialog, \
-    MenuCreateUpdateDialog, RestaurantPlanMenuCreateUpdateDialog, ClientsCreateUpdateDialog, \
-    OrderStagesCreateUpdateDialog, TablesCreateUpdateDialog, OrdersCreateUpdateDialog
+    ClientsDataModel, TablesDataModel, OrdersDataModel, OrderDishesDataModel, OrderDishesCookDataModel
+from core.dialogs_list import (PermissionsCreateUpdateDialog, UsersCreateUpdateDialog, ContentTypesCreateUpdateDialog, \
+                               GroupsCreateUpdateDialog, DishesCreateUpdateDialog, DishTypesCreateUpdateDialog,
+                               RestaurantCreateUpdateDialog, \
+                               MenuCreateUpdateDialog, RestaurantPlanMenuCreateUpdateDialog, ClientsCreateUpdateDialog,
+                               TablesCreateUpdateDialog,
+                               OrdersCreateUpdateDialog)
 from core.dict_data_models import ContentTypeDictDataModeL, DishTypeDictDataModeL, MenuDictDataModeL, \
-    RestaurantDictDataModeL, ClientDictDataModel, TablesDictDataModel, OrderStageDictDataModel
+    RestaurantDictDataModeL, ClientDictDataModel, TablesDictDataModel, DishDictDataModel
 from core.dropdowns_list import RestaurantDropDown
 from pydantic_models.restaurant_plan_menu import RestaurantPlanMenuResponse
+from services.requests import RequestMethod
 
+
+import flet_core as ft
 
 # ADMIN
 
@@ -122,15 +128,8 @@ class ClientsTable(PydanticDatatable):
     data_model = ClientsDataModel
 
 
-class OrderStagesTable(PydanticDatatable):
-    visible_columns = ['id', 'name',]
-    url = '/food/order_stages/'
-    dialog = OrderStagesCreateUpdateDialog
-    data_model = OrderStagesDataModel
-
-
 class TablesTable(PydanticDatatable):
-    visible_columns = ['id', 'number', 'restaurant', 'description',]
+    visible_columns = ['id', 'number', 'restaurant', 'description', ]
     url = '/food/tables/'
     foreign_data_template = {
         'restaurant': RestaurantDictDataModeL
@@ -143,9 +142,12 @@ class OrdersTable(PydanticDatatable):
     visible_columns = ['id', 'client', 'table', 'stage', 'created_at']
     url = '/food/orders/'
     foreign_data_template = {
-        'client': ClientDic4tDataModel,
+        'client': ClientDictDataModel,
         'table': TablesDictDataModel,
-        'stage': OrderStageDictDataModel
     }
     dialog = OrdersCreateUpdateDialog
     data_model = OrdersDataModel
+
+    search_dropdowns = {
+        'stage': OrderStageDropDown('stage', width=200)
+    }

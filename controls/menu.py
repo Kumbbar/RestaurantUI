@@ -2,7 +2,7 @@ import flet_core as ft
 
 from consts.colors import PastelColors
 from controls.dialogs import LogoutDialog
-from core.tiles_list import get_admin_tiles, get_menu_tiles, get_clients_service_tiles
+from core.tiles_list import get_admin_tiles, get_menu_tiles, get_clients_service_tiles, get_cooking_tiles
 from settings import LOGIN_PAGE_VIEW_URL
 
 
@@ -32,6 +32,11 @@ class MainMenu(ft.Container):
                 label='CLIENTS SERVICE',
                 selected_icon=ft.icons.MONEY,
                 icon=ft.icons.MONEY_SHARP,
+            ),
+            ft.NavigationRailDestination(
+                label='COOKING',
+                selected_icon=ft.icons.SOUP_KITCHEN,
+                icon=ft.icons.SOUP_KITCHEN,
             ),
             ft.NavigationRailDestination(
                 label='SETTINGS',
@@ -66,13 +71,16 @@ class MainMenu(ft.Container):
         if e.control.selected_index == 0:  # ADMIN
             self.page.current_view.workspace.controls.clear()
             self.page.current_view.workspace.controls = get_admin_tiles()
-        if e.control.selected_index == 1:  # MENU:
+        elif e.control.selected_index == 1:  # MENU
             self.page.current_view.workspace.controls.clear()
             self.page.current_view.workspace.controls = get_menu_tiles()
-        if e.control.selected_index == 2:  # CLIENTS SERVICE:
+        elif e.control.selected_index == 2:  # CLIENTS SERVICE
             self.page.current_view.workspace.controls.clear()
             self.page.current_view.workspace.controls = get_clients_service_tiles()
-        if e.control.selected_index == 3:
+        elif e.control.selected_index == 3:  # COOKING
+            self.page.current_view.workspace.controls.clear()
+            self.page.current_view.workspace.controls = get_cooking_tiles()
+        elif e.control.selected_index == 5:
             self.page.dialog = LogoutDialog(logout_event=self.logout_click)
         self.page.update()
 

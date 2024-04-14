@@ -22,6 +22,24 @@ class BottomSheetServiceUnavailable(ft.BottomSheet):
         self.open = True
 
 
+class BottomSheetOrderTotalPrice(ft.BottomSheet):
+    def __init__(self, price):
+        super().__init__()
+        self.content = ft.Container(
+            padding=ft.Padding(20, 10, 20, 10),
+            width=500,
+            content=ft.Column(
+                [
+                    ft.Text(f"TOTAL PRICE - {price}", size=18, weight=ft.FontWeight.BOLD),
+                ],
+                tight=True,
+                height=60
+            ),
+        )
+        self.bgcolor = PastelColors.LIGHT_BROWN
+        self.open = True
+
+
 class BottomSheetInvalidToken(ft.BottomSheet):
     def __init__(self):
         super().__init__()

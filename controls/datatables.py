@@ -13,7 +13,7 @@ class BaseDatatable(ft.UserControl):
     visible_columns: List
     data_model: BaseDataModel
 
-    def __init__(self, extra_url='', autoload=True):
+    def __init__(self, extra_url='', autoload=True, *args, **kwargs):
         super().__init__()
         self.extra_url = extra_url
         self.autoload = autoload
@@ -311,8 +311,8 @@ class PydanticDatatable(DropDownFilterMixinDatatable,
     dialog: BaseCreateUpdateDialog
     url: str
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.foreign_data = dict()
         self.create_button = ft.OutlinedButton(
             'CREATE',
@@ -341,7 +341,7 @@ class PydanticDatatable(DropDownFilterMixinDatatable,
 
     def get_data(self):
         request_data = dict(params=self.get_params_for_request())
-        self.data = self.__class__.data_model(self.page, **request_data)
+        self.data = self.__class__.data_model(self.page, self.extra_url, **request_data)
         self.__get_foreign_data()
         rows = self.convert_to_datatable_rows()
         return rows

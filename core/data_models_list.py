@@ -6,7 +6,8 @@ from pydantic_models.dishes import DishResponse
 from pydantic_models.groups import GroupResponse
 from pydantic_models.menu import MenuResponse
 from pydantic_models.order import OrderResponse
-from pydantic_models.order_stages import OrderStageResponse
+from pydantic_models.order_dish import OrderDishResponse
+from pydantic_models.order_dishes_cook import OrderDishCookResponse
 from pydantic_models.permissions import PermissionResponse
 from pydantic_models.restaurant_plan_menu import RestaurantPlanMenuResponse
 from pydantic_models.restaurants import RestaurantResponse
@@ -55,6 +56,11 @@ class DishesDataModel(BaseDataModel):
     pydantic_model = DishResponse
 
 
+class MenuPlanDishesDataModel(BaseDataModel):
+    url = '/food/planned_dishes/'
+    pydantic_model = DishResponse
+
+
 class MenuDataModel(BaseDataModel):
     url = '/food/menu/'
     pydantic_model = MenuResponse
@@ -90,16 +96,31 @@ class ClientsDataModel(BaseDataModel):
     pydantic_model = ClientResponse
 
 
-class OrderStagesDataModel(BaseDataModel):
-    url = '/food/order_stages/'
-    pydantic_model = OrderStageResponse
-
-
 class TablesDataModel(BaseDataModel):
     url = '/food/tables/'
+    pydantic_model = TableResponse
+
+
+class RestaurantTablesDataModel(BaseDataModel):
+    url = '/food/restaurant_tables/'
     pydantic_model = TableResponse
 
 
 class OrdersDataModel(BaseDataModel):
     url = '/food/orders/'
     pydantic_model = OrderResponse
+
+
+class OrderDishesDataModel(BaseDataModel):
+    url = '/food/order_dishes/'
+    pydantic_model = OrderDishResponse
+
+
+class OrderDishesCookDataModel(BaseDataModel):
+    url = '/food/order_dishes_cook/'
+    pydantic_model = OrderDishCookResponse
+
+
+class OrderDishesReadyDataModel(BaseDataModel):
+    url = '/food/order_dishes_ready/'
+    pydantic_model = OrderDishCookResponse  # same for cook

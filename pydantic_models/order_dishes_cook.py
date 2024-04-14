@@ -4,12 +4,12 @@ from typing import List, Optional
 from . import BaseResponseObject, BaseResponse
 
 
-class Order(BaseResponseObject):
-    stage: str
+class OrderDishCook(BaseResponseObject):
+    count: int
     table: Optional[int] = None
-    client: Optional[int] = None
+    dish: int
     created_at: datetime.datetime
 
 
-class OrderResponse(BaseResponse):
-    results: List[Order]
+class OrderDishCookResponse(BaseResponse):
+    results: List[OrderDishCook]
