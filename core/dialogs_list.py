@@ -1,6 +1,6 @@
 from flet_core import NumbersOnlyInputFilter
 
-from controls.datepickers import InputDatePicker
+from controls.pickers import InputDatePicker, InputTimePicker, InputDateTimePicker
 from controls.dialogs import BaseCreateUpdateDialog
 import flet_core as ft
 
@@ -179,3 +179,18 @@ class OrdersCreateUpdateDialog(BaseCreateUpdateDialog):
         return {
             'order_dishes': OrderDishEditor('ORDER DISHES')
         }
+
+
+class TableReservationCreateUpdateDialog(BaseCreateUpdateDialog):
+    url = '/food/table_reservation/'
+
+    def get_fields(self):
+        return {
+            'client': ClientDropDown('client'),
+            'table': RestaurantTablesDropDown('table number'),
+            'time_of_start': InputDateTimePicker('start time'),
+            'time_of_end': InputDateTimePicker('end time'),
+            'confirmed': ft.Checkbox(label='confirmed'),
+            'has_come': ft.Checkbox(label='has come')
+        }
+

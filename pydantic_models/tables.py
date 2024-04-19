@@ -5,7 +5,7 @@ from . import BaseResponseObject, BaseResponse
 
 class Table(BaseResponseObject):
     number: int
-    restaurant: Optional[int] = None
+    restaurant: int
     description: Optional[str] = None
 
 

@@ -11,6 +11,7 @@ from pydantic_models.order_dishes_cook import OrderDishCookResponse
 from pydantic_models.permissions import PermissionResponse
 from pydantic_models.restaurant_plan_menu import RestaurantPlanMenuResponse
 from pydantic_models.restaurants import RestaurantResponse
+from pydantic_models.table_reservation import TableReservationResponse
 from pydantic_models.tables import TableResponse
 from pydantic_models.user_profile import UserProfileResponse
 from pydantic_models.users import UserResponse
@@ -104,6 +105,11 @@ class TablesDataModel(BaseDataModel):
 class RestaurantTablesDataModel(BaseDataModel):
     url = '/food/restaurant_tables/'
     pydantic_model = TableResponse
+
+
+class TableReservationDataModel(BaseDataModel):
+    url = '/food/table_reservation/'
+    pydantic_model = TableReservationResponse
 
 
 class OrdersDataModel(BaseDataModel):

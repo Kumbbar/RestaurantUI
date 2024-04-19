@@ -6,7 +6,7 @@ import flet_core as ft
 from controls.many_to_many import ManyToManyDataControl
 from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable, GroupsTypesTable, DishesTable, \
     DishTypesTable, RestaurantTable, MenuTable, RestaurantPlanMenuTable, ClientsTable, TablesTable, \
-    OrdersTable
+    OrdersTable, TableReservationTable
 from core.many_to_many_list import UserPermissionsManyToManyDataControl
 from core.order_dishes_table import OrderDishesCookTable, OrderDishesReadyTable
 from core.selection_datatables_list import UserGroupsManySelectionsTable
@@ -134,7 +134,7 @@ def get_clients_service_tiles():
         NavigationTile(
             'TABLE RESERVATION',
             ft.icons.TABLE_RESTAURANT,
-            next_control=PASS,
+            next_control=TableReservationTable(),
         ),
         CustomWidthNavigationTile(
             width=200,

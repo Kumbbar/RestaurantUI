@@ -2,13 +2,14 @@ from controls.datatables import PydanticDatatable, ImageMixinDatatable, SearchMi
 from controls.dropdown import OrderStageDropDown
 from core.data_models_list import PermissionsDataModel, UsersDataModel, ContentTypesDataModel, GroupsDataModel, \
     DishesDataModel, DishTypesDataModel, RestaurantDataModel, MenuDataModel, RestaurantPlanMenuDataModel, \
-    ClientsDataModel, TablesDataModel, OrdersDataModel, OrderDishesDataModel, OrderDishesCookDataModel
+    ClientsDataModel, TablesDataModel, OrdersDataModel, OrderDishesDataModel, OrderDishesCookDataModel, \
+    TableReservationDataModel
 from core.dialogs_list import (PermissionsCreateUpdateDialog, UsersCreateUpdateDialog, ContentTypesCreateUpdateDialog, \
                                GroupsCreateUpdateDialog, DishesCreateUpdateDialog, DishTypesCreateUpdateDialog,
                                RestaurantCreateUpdateDialog, \
                                MenuCreateUpdateDialog, RestaurantPlanMenuCreateUpdateDialog, ClientsCreateUpdateDialog,
                                TablesCreateUpdateDialog,
-                               OrdersCreateUpdateDialog)
+                               OrdersCreateUpdateDialog, TableReservationCreateUpdateDialog)
 from core.dict_data_models import ContentTypeDictDataModeL, DishTypeDictDataModeL, MenuDictDataModeL, \
     RestaurantDictDataModeL, ClientDictDataModel, TablesDictDataModel, DishDictDataModel
 from core.dropdowns_list import RestaurantDropDown
@@ -151,3 +152,22 @@ class OrdersTable(PydanticDatatable):
     search_dropdowns = {
         'stage': OrderStageDropDown('stage', width=200)
     }
+
+
+class TableReservationTable(PydanticDatatable):
+    visible_columns = [
+        'id',
+        'table',
+        'client',
+        'time_of_start',
+        'time_of_end',
+        'confirmed',
+        'has_come'
+    ]
+    url = '/food/table_reservation/'
+    foreign_data_template = {
+        'client': ClientDictDataModel,
+        'table': TablesDictDataModel,
+    }
+    dialog = TableReservationCreateUpdateDialog
+    data_model = TableReservationDataModel
