@@ -55,7 +55,7 @@ class MainMenu(ft.Container):
                 selected_index=0,
                 extended=True,
                 height=self.total_height,
-                bgcolor=PastelColors.DARK_BROWN,
+                bgcolor=PastelColors.LIGHT_BROWN,
                 label_type=ft.NavigationRailLabelType.ALL,
                 leading=ft.Container(
                     ft.Text(

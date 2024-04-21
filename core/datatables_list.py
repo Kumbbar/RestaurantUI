@@ -3,13 +3,14 @@ from controls.dropdown import OrderStageDropDown
 from core.data_models_list import PermissionsDataModel, UsersDataModel, ContentTypesDataModel, GroupsDataModel, \
     DishesDataModel, DishTypesDataModel, RestaurantDataModel, MenuDataModel, RestaurantPlanMenuDataModel, \
     ClientsDataModel, TablesDataModel, OrdersDataModel, OrderDishesDataModel, OrderDishesCookDataModel, \
-    TableReservationDataModel
+    TableReservationDataModel, ClientsBlackListDataModel
 from core.dialogs_list import (PermissionsCreateUpdateDialog, UsersCreateUpdateDialog, ContentTypesCreateUpdateDialog, \
                                GroupsCreateUpdateDialog, DishesCreateUpdateDialog, DishTypesCreateUpdateDialog,
                                RestaurantCreateUpdateDialog, \
                                MenuCreateUpdateDialog, RestaurantPlanMenuCreateUpdateDialog, ClientsCreateUpdateDialog,
                                TablesCreateUpdateDialog,
-                               OrdersCreateUpdateDialog, TableReservationCreateUpdateDialog)
+                               OrdersCreateUpdateDialog, TableReservationCreateUpdateDialog,
+                               ClientsBlackListCreateUpdateDialog)
 from core.dict_data_models import ContentTypeDictDataModeL, DishTypeDictDataModeL, MenuDictDataModeL, \
     RestaurantDictDataModeL, ClientDictDataModel, TablesDictDataModel, DishDictDataModel
 from core.dropdowns_list import RestaurantDropDown
@@ -127,6 +128,16 @@ class ClientsTable(PydanticDatatable):
     url = '/food/clients/'
     dialog = ClientsCreateUpdateDialog
     data_model = ClientsDataModel
+
+
+class ClientsBlackListTable(PydanticDatatable):
+    visible_columns = ['id', 'client']
+    url = '/food/clients_black_list/'
+    dialog = ClientsBlackListCreateUpdateDialog
+    data_model = ClientsBlackListDataModel
+    foreign_data_template = {
+        'client': ClientDictDataModel
+    }
 
 
 class TablesTable(PydanticDatatable):

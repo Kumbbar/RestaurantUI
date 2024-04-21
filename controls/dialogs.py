@@ -96,7 +96,8 @@ class BaseCreateUpdateDialog(ABC, ft.UserControl):
             title = ft.Text(f'Create', weight=ft.FontWeight.BOLD)
 
         self.actions = [
-            ft.TextButton("Save", on_click=self.save_click),
+            ft.TextButton("Save and close", on_click=self.save_click),
+            ft.TextButton("Save", on_click=self.save_not_close_click),
             ft.TextButton("Cancel", on_click=self.no_click),
         ]
         self.actions_alignment = ft.MainAxisAlignment.END
@@ -178,6 +179,13 @@ class BaseCreateUpdateDialog(ABC, ft.UserControl):
         if response.ok:
             self.datatable_ref.refresh_data()
             self.close()
+
+    def save_not_close_click(self, _):
+        response = self.send_fields_data()
+        if response.ok:
+            self.id = response.json().get('id')
+            self.did_mount()
+            self.datatable_ref.refresh_data()
 
     def no_click(self, _):
         self.close()

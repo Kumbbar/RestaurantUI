@@ -81,15 +81,16 @@ class ExceptionBottomSheet(ft.BottomSheet):
     def convert_data(self, data):
         result = []
         for key, value in data.items():
-            key_result = ''
+            key_result = []
             if isinstance(value, list):
                 for data in value:
-                    key_result += f' {data}'
+                    key_result.append(str(data))
+                total_key_result = ',  '.join(key_result)
             else:
-                key_result = value
+                total_key_result = value
             result.append(
                 ft.Text(
-                    value=f'{key} - {key_result}',
+                    value=f'{key} - {total_key_result}',
                     size=14
                 )
             )

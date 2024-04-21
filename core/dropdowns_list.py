@@ -40,7 +40,7 @@ class MenuDropDown(CustomDropDown):
 
 
 class ClientDropDown(CustomDropDown):
-    name = 'surname'
+    name = ['name', 'surname', 'patronymic']
     data_model = ClientsDataModel
 
 

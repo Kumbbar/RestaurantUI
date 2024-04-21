@@ -3,6 +3,7 @@ import time
 
 import flet as ft
 from consts.colors import PastelColors
+from controls.information_panel import InformationPanel
 from controls.menu import MainMenu
 from controls.profile import SmallProfileContainer
 from core.data_models_list import UserProfileDataModel
@@ -56,10 +57,7 @@ class MainPage(BasePage):
                     ft.Column(
                         controls=[
                             MainMenu(),
-                            ft.Container(
-                                height=100,
-                                bgcolor=ft.colors.AMBER_50
-                            )
+                            InformationPanel()
                         ],
                         col={
                             "xs": 12,

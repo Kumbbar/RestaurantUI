@@ -38,10 +38,21 @@ class CustomDropDown(ft.UserControl):
     def get_key_and_name(self, data):
         result = list()
         for row in data:
+            if isinstance(self.__class__.name, (tuple, list)):
+                row_result = []
+                for name in self.__class__.name:
+                    name_data = getattr(row, name)
+                    if not name_data:
+                        continue
+                    row_result.append(name_data)
+                row_all_data = ' '.join(row_result)
+            else:
+                row_all_data = getattr(row, self.__class__.name)
+
             result.append(
                 dict(
                     key=getattr(row, 'id'),
-                    text=getattr(row, self.__class__.name)
+                    text=row_all_data
                 )
             )
         return result

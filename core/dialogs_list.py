@@ -151,7 +151,16 @@ class ClientsCreateUpdateDialog(BaseCreateUpdateDialog):
             'name': ft.TextField(label='name'),
             'surname': ft.TextField(label='surname'),
             'patronymic': ft.TextField(label='patronymic'),
-            'phone_number': ft.TextField(label='codename', value='+')
+            'phone_number': ft.TextField(label='phone number')
+        }
+
+
+class ClientsBlackListCreateUpdateDialog(BaseCreateUpdateDialog):
+    url = '/food/clients_black_list/'
+
+    def get_fields(self):
+        return {
+            'client': ClientDropDown('client')
         }
 
 

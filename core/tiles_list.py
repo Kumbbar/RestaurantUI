@@ -6,7 +6,7 @@ import flet_core as ft
 from controls.many_to_many import ManyToManyDataControl
 from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable, GroupsTypesTable, DishesTable, \
     DishTypesTable, RestaurantTable, MenuTable, RestaurantPlanMenuTable, ClientsTable, TablesTable, \
-    OrdersTable, TableReservationTable
+    OrdersTable, TableReservationTable, ClientsBlackListTable
 from core.many_to_many_list import UserPermissionsManyToManyDataControl
 from core.order_dishes_table import OrderDishesCookTable, OrderDishesReadyTable
 from core.selection_datatables_list import UserGroupsManySelectionsTable
@@ -32,10 +32,11 @@ def create_tiles_scroll(tiles):
 
 def get_admin_tiles():
     admin_tiles = [
-        NavigationTile(
+        CustomWidthNavigationTile(
             'USERS',
             ft.icons.PERSON,
-            next_control=UsersTable()
+            next_control=UsersTable(),
+            width=200
         ),
         NavigationTile(
                 'PERMISSIONS',
@@ -51,42 +52,7 @@ def get_admin_tiles():
                     'GROUPS',
                     ft.icons.GROUP,
                     next_control=GroupsTypesTable()
-        ),
-        NavigationTile(
-            'CONTENT TYPES',
-            ft.icons.DATASET,
-            next_control=PASS
-        ),
-        NavigationTile(
-            'CONTENT TYPES',
-            ft.icons.DATASET,
-            next_control=PASS
-        ),
-        NavigationTile(
-            'CONTENT TYPES',
-            ft.icons.DATASET,
-            next_control=PASS
-        ),
-        NavigationTile(
-            'CONTENT TYPES',
-            ft.icons.DATASET,
-            next_control=PASS
-        ),
-        NavigationTile(
-            'CONTENT TYPES',
-            ft.icons.DATASET,
-            next_control=PASS
-        ),
-        NavigationTile(
-            'CONTENT TYPES',
-            ft.icons.DATASET,
-            next_control=PASS
-        ),
-        NavigationTile(
-            'CONTENT TYPES',
-            ft.icons.DATASET,
-            next_control=UserPermissionsManyToManyDataControl('PERMISSIONS')
-        ),
+        )
 
     ]
     return [create_tiles_scroll(admin_tiles)]
@@ -151,7 +117,7 @@ def get_clients_service_tiles():
         NavigationTile(
             'BLACK LIST',
             ft.icons.PERSON_OFF,
-            next_control=PASS
+            next_control=ClientsBlackListTable()
         ),
         NavigationTile(
             'CLIENTS',
