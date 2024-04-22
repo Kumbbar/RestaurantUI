@@ -4,6 +4,7 @@ from controls.items import NavigationTile, CustomWidthNavigationTile
 import flet_core as ft
 
 from controls.many_to_many import ManyToManyDataControl
+from controls.settings import SettingsContainer
 from core.datatables_list import UsersTable, PermissionsTable, ContentTypesTable, GroupsTypesTable, DishesTable, \
     DishTypesTable, RestaurantTable, MenuTable, RestaurantPlanMenuTable, ClientsTable, TablesTable, \
     OrdersTable, TableReservationTable, ClientsBlackListTable
@@ -137,3 +138,10 @@ def get_cooking_tiles():
         )
     ]
     return [create_tiles_scroll(menu_tiles)]
+
+
+def get_settings():
+    settings = [
+        SettingsContainer()
+    ]
+    return [create_tiles_scroll(settings)]

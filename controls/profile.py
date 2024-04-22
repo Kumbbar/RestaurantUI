@@ -45,7 +45,7 @@ class SmallProfileContainer(ft.UserControl):
                 rotation=math.pi / 3,
             ),
             border_radius=10,
-            margin=ft.Margin(10, 0, 0, 0),
+            margin=ft.Margin(0, 0, 0, 0),
             bgcolor=ft.colors.BLACK
         )
 
