@@ -12,7 +12,7 @@ from core.dialogs_list import (PermissionsCreateUpdateDialog, UsersCreateUpdateD
                                OrdersCreateUpdateDialog, TableReservationCreateUpdateDialog,
                                ClientsBlackListCreateUpdateDialog)
 from core.dict_data_models import ContentTypeDictDataModeL, DishTypeDictDataModeL, MenuDictDataModeL, \
-    RestaurantDictDataModeL, ClientDictDataModel, TablesDictDataModel, DishDictDataModel
+    RestaurantDictDataModeL, ClientDictDataModel, TablesDictDataModel, DishDictDataModel, RestaurantTablesDictDataModel
 from core.dropdowns_list import RestaurantDropDown
 from pydantic_models.restaurant_plan_menu import RestaurantPlanMenuResponse
 from services.requests import RequestMethod
@@ -155,7 +155,7 @@ class OrdersTable(PydanticDatatable):
     url = '/food/orders/'
     foreign_data_template = {
         'client': ClientDictDataModel,
-        'table': TablesDictDataModel,
+        'table': RestaurantTablesDictDataModel,
     }
     dialog = OrdersCreateUpdateDialog
     data_model = OrdersDataModel
@@ -178,7 +178,7 @@ class TableReservationTable(PydanticDatatable):
     url = '/food/table_reservation/'
     foreign_data_template = {
         'client': ClientDictDataModel,
-        'table': TablesDictDataModel,
+        'table': RestaurantTablesDictDataModel,
     }
     dialog = TableReservationCreateUpdateDialog
     data_model = TableReservationDataModel

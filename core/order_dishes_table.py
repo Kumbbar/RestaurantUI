@@ -1,6 +1,7 @@
 from controls.datatables import SearchMixinDatatable, BaseDatatable, PydanticDatatable
 from core.data_models_list import OrderDishesDataModel, OrderDishesCookDataModel, OrderDishesReadyDataModel
-from core.dict_data_models import DishDictDataModel, TablesDictDataModel
+from core.dict_data_models import DishDictDataModel, TablesDictDataModel, RestaurantTablesDictDataModel, \
+    MenuPlanDishesDictDataModel
 from services.requests import RequestMethod
 
 import flet_core as ft
@@ -10,7 +11,7 @@ class OrderDishesTable(PydanticDatatable):
     visible_columns = ['id', 'dish', 'count', 'stage']
     data_model = OrderDishesDataModel
     foreign_data_template = {
-        'dish': DishDictDataModel,
+        'dish': MenuPlanDishesDictDataModel,
     }
     url = '/food/order_dishes/'
 
@@ -41,8 +42,8 @@ class OrderDishesCookTable(OrderDishesTable):
     visible_columns = ['id', 'dish', 'count', 'table', 'created_at']
     url = '/food/order_dishes_cook/'
     foreign_data_template = {
-        'dish': DishDictDataModel,
-        'table': TablesDictDataModel
+        'dish': MenuPlanDishesDictDataModel,
+        'table': RestaurantTablesDictDataModel
     }
     data_model = OrderDishesCookDataModel
 

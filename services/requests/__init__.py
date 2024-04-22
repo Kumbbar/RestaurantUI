@@ -9,7 +9,7 @@ from flet_core import Page
 from controls.bottom_sheets import BottomSheetServiceUnavailable, BottomSheetInvalidToken, ExceptionBottomSheet
 from services.cryptography import decrypt_token
 from services import BaseService
-from settings import SESSION_TOKEN_KEY, BACKEND_BASE_URL
+from settings import SESSION_TOKEN_KEY, BACKEND_BASE_URL, LOGIN_PAGE_VIEW_URL
 
 
 class RequestMethod(Enum):
@@ -35,6 +35,8 @@ class BaseRequestService(BaseService):
 
     def _show_user_token_invalid(self):
         bottom_sheet = BottomSheetInvalidToken()
+        if self.page_link.route == LOGIN_PAGE_VIEW_URL:
+            return
         self.page_link.bottom_sheet = bottom_sheet
         self.page_link.update()
 
