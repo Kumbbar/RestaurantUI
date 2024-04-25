@@ -30,11 +30,7 @@ class MainPage(BasePage):
                 color='black'
             )
         )
-        self.test = ft.Container(
-            bgcolor='green',
-            height=300,
-            width=300,
-        )
+        self.main_menu = MainMenu()
         self.workspace = ft.ResponsiveRow(
             controls=[],
             col={"sm": 8, "md": 8, "xl": 8, "xs": 11}
@@ -56,7 +52,7 @@ class MainPage(BasePage):
                 controls=[
                     ft.Column(
                         controls=[
-                            MainMenu(),
+                            self.main_menu,
                             InformationPanel()
                         ],
                         col={

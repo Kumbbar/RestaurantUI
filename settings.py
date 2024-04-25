@@ -19,6 +19,7 @@ MAIN_PAGE_VIEW_URL = '/'
 LOGIN_PAGE_VIEW_URL = '/login'
 
 SESSION_TOKEN_KEY = 'token'
+DEFAULT_WORKSPACE_KEY = 'default_workspace'
 
 
 SECRET_KEY = os.environ.get('SECRET_KEY')

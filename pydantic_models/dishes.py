@@ -5,10 +5,10 @@ from . import BaseResponseObject, BaseResponse
 
 class Dish(BaseResponseObject):
     name: str
-    description: str
+    description: Optional[str] = None
     dish_type: Optional[int] = None
-    weight: int
-    price: int
+    weight: Optional[float] = None
+    price: Optional[float] = None
     image: Optional[str] = None
 
 

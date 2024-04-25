@@ -7,7 +7,7 @@ class Client(BaseResponseObject):
     name: str
     surname: str
     patronymic: Optional[str] = None
-    phone_number: str
+    phone_number: Optional[str] = None
 
 
 class ClientResponse(BaseResponse):

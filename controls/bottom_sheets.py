@@ -95,3 +95,21 @@ class ExceptionBottomSheet(ft.BottomSheet):
                 )
             )
         return result
+
+
+class BottomSheetDefaultWorkspace(ft.BottomSheet):
+    def __init__(self, workspace_name):
+        super().__init__()
+        self.content = ft.Container(
+            padding=ft.Padding(20, 10, 20, 10),
+            width=500,
+            content=ft.Column(
+                [
+                    ft.Text(f"DEFAULT WORKSPACE - {workspace_name}", size=18, weight=ft.FontWeight.BOLD),
+                ],
+                tight=True,
+                height=40
+            ),
+        )
+        self.bgcolor = PastelColors.LIGHT_BROWN
+        self.open = True

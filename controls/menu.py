@@ -3,7 +3,7 @@ import flet_core as ft
 from consts.colors import PastelColors
 from controls.dialogs import LogoutDialog
 from core.tiles_list import get_admin_tiles, get_menu_tiles, get_clients_service_tiles, get_cooking_tiles, get_settings
-from settings import LOGIN_PAGE_VIEW_URL
+from settings import LOGIN_PAGE_VIEW_URL, DEFAULT_WORKSPACE_KEY
 
 
 class PermissionNavigationRailDestination(ft.NavigationRailDestination):
@@ -88,12 +88,24 @@ class MainMenu(ft.Container):
 
     def did_mount(self):
         user_permissions = self.page.current_view.current_user.data.permissions
-        for destination in self.destinations:
+        for destination in self.destinations[:]:
             if destination.permission and destination.permission not in user_permissions:
                 self.destinations.remove(destination)
         self.content.destinations = self.destinations
         self.content.height = self.total_height
+
+        if self.page.client_storage.contains_key(DEFAULT_WORKSPACE_KEY):
+            default_key = self.page.client_storage.get(DEFAULT_WORKSPACE_KEY)
+            for destination in self.destinations:
+                if destination.label == default_key:
+                    self.content.selected_index = self.destinations.index(destination)
+            if default_key in self.destinations_keys.keys():
+                self.page.current_view.workspace.controls = self.destinations_keys[default_key]()
         self.update()
+
+    @property
+    def destinations_keys(self):
+        return {destination.label: destination.workspace_data for destination in self.destinations}
 
     def change_main_menu(self, e):
         if e.control.selected_index == len(self.destinations) - 1:
