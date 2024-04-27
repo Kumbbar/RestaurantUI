@@ -128,17 +128,7 @@ class LoginPage(BasePage):
                         weight=ft.FontWeight.BOLD
                     )
                 ),
-                ft.Container(height=5),
-                ft.Container(
-                    content=ft.Text(
-                        value="Forgot your password?",
-                        size=14,
-                        font_family='poppins medium',
-                        color=PastelColors.DARK_BROWN
-                    ),
-                ),
-                ft.Container(height=5),
-
+                ft.Container(height=5)
             ]
         )
         self.content = ft.Container(

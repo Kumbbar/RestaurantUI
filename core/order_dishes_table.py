@@ -42,8 +42,7 @@ class OrderDishesCookTable(OrderDishesTable):
     visible_columns = ['id', 'dish', 'count', 'table', 'created_at']
     url = '/food/order_dishes_cook/'
     foreign_data_template = {
-        'dish': MenuPlanDishesDictDataModel,
-        'table': RestaurantTablesDictDataModel
+        'dish': MenuPlanDishesDictDataModel
     }
     data_model = OrderDishesCookDataModel
 

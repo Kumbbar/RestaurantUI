@@ -45,8 +45,11 @@ class InformationPanel(ft.Container):
         response = self.page.current_view.auth_service.send_closed_request(
             RequestMethod.GET,
             f'/food/today_restaurant_info/',
-        ).json()
-        self.tables_reserved_label.value = f'Tables reserved: {response['tables_reserved']}'
-        self.orders_label.value = f'Not ready orders: {response['not_ready_orders']}'
+        )
+        if not response.ok:
+            return
+        response_data = response.json()
+        self.tables_reserved_label.value = f'Tables reserved: {response_data['tables_reserved']}'
+        self.orders_label.value = f'Not ready orders: {response_data['not_ready_orders']}'
         self.tables_reserved_label.update()
         self.orders_label.update()

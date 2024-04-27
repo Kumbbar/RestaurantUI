@@ -34,9 +34,9 @@ class BaseRequestService(BaseService):
         self.page_link.update()
 
     def _show_user_token_invalid(self):
-        bottom_sheet = BottomSheetInvalidToken()
         if self.page_link.route == LOGIN_PAGE_VIEW_URL:
             return
+        bottom_sheet = BottomSheetInvalidToken()
         self.page_link.bottom_sheet = bottom_sheet
         self.page_link.update()
 
@@ -65,7 +65,7 @@ class UserRequestService(BaseRequestService):
     @property
     def token(self) -> str:
         if not self.page_link.client_storage.contains_key(SESSION_TOKEN_KEY):
-            raise Exception
+            return ''
         encrypted_token = decrypt_token(self.page_link.client_storage.get(SESSION_TOKEN_KEY))
         return encrypted_token
 
@@ -95,6 +95,6 @@ class UserRequestService(BaseRequestService):
             elif response.status_code >= 400:
                 self._show_exception(response.json())
             return response
-        except requests.exceptions.ConnectionError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.JSONDecodeError):
             self._show_server_unavailable()
             return self.server_unavailable_response

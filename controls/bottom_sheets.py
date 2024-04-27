@@ -1,7 +1,7 @@
 import flet_core as ft
 
 from consts.colors import PastelColors
-from settings import LOGIN_PAGE_VIEW_URL
+from settings import LOGIN_PAGE_VIEW_URL, SESSION_TOKEN_KEY
 
 
 class BottomSheetServiceUnavailable(ft.BottomSheet):
@@ -12,7 +12,7 @@ class BottomSheetServiceUnavailable(ft.BottomSheet):
             width=500,
             content=ft.Column(
                 [
-                    ft.Text("Server unavailable", size=18, weight=ft.FontWeight.BOLD),
+                    ft.Text("Server unavailable 500", size=18, weight=ft.FontWeight.BOLD),
                     ft.Text("Contact to developers if you need", size=14),
                 ],
                 tight=True,
@@ -54,7 +54,7 @@ class BottomSheetInvalidToken(ft.BottomSheet):
                         'Log in',
                         bgcolor=PastelColors.LIGHT_BROWN,
                         color=ft.colors.WHITE,
-                        on_click=lambda e: self.page.go(LOGIN_PAGE_VIEW_URL)
+                        on_click=self.login_redirect
                     )
                 ],
                 tight=True,
@@ -62,6 +62,10 @@ class BottomSheetInvalidToken(ft.BottomSheet):
         )
         self.bgcolor = PastelColors.WHITE_BASE
         self.open = True
+
+    def login_redirect(self, _):
+        self.page.current_view.auth_service.delete_exists_user_token()
+        self.page.go(LOGIN_PAGE_VIEW_URL)
 
 
 class ExceptionBottomSheet(ft.BottomSheet):

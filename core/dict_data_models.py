@@ -35,5 +35,6 @@ class RestaurantTablesDictDataModel(DictDataModeL, RestaurantTablesDataModel):
 class DishDictDataModel(DictDataModeL, DishesDataModel):
     name = 'name'
 
+
 class MenuPlanDishesDictDataModel(DictDataModeL, MenuPlanDishesDataModel):
     name = 'name'

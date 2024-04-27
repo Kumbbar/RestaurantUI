@@ -24,3 +24,7 @@ class AuthService(UserRequestService):
         )
         if response or response.status_code == 401:
             self.page_link.client_storage.remove(SESSION_TOKEN_KEY)
+
+    def delete_exists_user_token(self):
+        if self.page_link.client_storage.contains_key(SESSION_TOKEN_KEY):
+            self.page_link.client_storage.remove(SESSION_TOKEN_KEY)
