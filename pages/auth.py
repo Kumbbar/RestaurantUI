@@ -34,7 +34,7 @@ class LoginPage(BasePage):
             content=ft.TextField(
                 on_focus=self.password_field_in_focus,
                 on_change=self.user_field_change,
-                hint_text='Email',
+                hint_text='Login',
                 hint_style=ft.TextStyle(
                     size=16,
                     font_family='Poppins Regular',

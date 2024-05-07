@@ -1,5 +1,6 @@
 from flet_core import NumbersOnlyInputFilter
 
+from controls.dropdown import OrderStageDropDown
 from controls.pickers import InputDatePicker, InputTimePicker, InputDateTimePicker
 from controls.dialogs import BaseCreateUpdateDialog
 import flet_core as ft
@@ -181,7 +182,8 @@ class OrdersCreateUpdateDialog(BaseCreateUpdateDialog):
     def get_fields(self):
         return {
             'client': ClientDropDown('client'),
-            'table': RestaurantTablesDropDown('table number')
+            'table': RestaurantTablesDropDown('table number'),
+            'stage': OrderStageDropDown('stage (dont change manually if you dont sure)', width=100)
         }
 
     def get_extra_controls(self):
