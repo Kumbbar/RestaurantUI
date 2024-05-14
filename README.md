@@ -4,7 +4,7 @@
 Система для автоматизации основных бизнес процессов ресторанов
 <!--Блок информации о репозитории в бейджах-->
 ![Static Badge](https://img.shields.io/badge/Author-Kumbbar-green)
-![Static Badge](https://img.shields.io/badge/SERVER-link-red?link=https%3A%2F%2Fgithub.com%2FKumbbar%2FRestaurant)
+<a href="https://github.com/Kumbbar/Restaurant">![Static Badge](https://img.shields.io/badge/SERVER-link-red)</a>
 
 ## Установка
 1. Запуск сервера
