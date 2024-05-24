@@ -7,6 +7,7 @@ from core.order_dishes_table import OrderDishesTable
 from core.selection_datatables_list import PermissionsManySelectionsTable, BaseDatatable, \
     UserPermissionsManySelectionsTable
 from services.requests import RequestMethod
+from settings import BACKEND_BASE_URL
 
 
 def get_param_ids(ids):
@@ -30,10 +31,10 @@ class OrderDishEditor(ft.UserControl):
                         height=50
                     )
         self.get_price_button = ft.ElevatedButton(
-                        'CALCULATE TOTAL PRICE',
+                        'GET ORDER TEMPLATE',
                         bgcolor=PastelColors.LIGHT_BROWN,
                         color=ft.colors.WHITE,
-                        on_click=self.show_total_price,
+                        on_click=self.show_total_price_template,
                         col=12,
                         height=50
                     )
@@ -71,14 +72,8 @@ class OrderDishEditor(ft.UserControl):
     def build(self):
         return self.content
 
-    def show_total_price(self, _):
-        total_price = self.page.current_view.auth_service.send_closed_request(
-            RequestMethod.GET,
-            f'/food/order_price/{self.value}/',
-
-        ).json()['price']
-        self.page.bottom_sheet = BottomSheetOrderTotalPrice(total_price)
-        self.page.update()
+    def show_total_price_template(self, _):
+        self.page.launch_url(f'{BACKEND_BASE_URL}/food/order_price_template/{self.value}')
 
     def update(self):
         self.current_order_dishes.extra_url = self.value

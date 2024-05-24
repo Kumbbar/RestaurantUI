@@ -1,5 +1,6 @@
 import copy
 
+from controls.dish_report import DishReport
 from controls.items import NavigationTile, CustomWidthNavigationTile
 import flet_core as ft
 
@@ -92,6 +93,11 @@ def get_menu_tiles():
             ft.icons.ACCESS_TIME,
             next_control=RestaurantPlanMenuTable()
         ),
+        NavigationTile(
+            'RESTAURANT REPORT',
+            ft.icons.DOCUMENT_SCANNER,
+            next_control=DishReport()
+        )
     ]
     return [create_tiles_scroll(menu_tiles)]
 
